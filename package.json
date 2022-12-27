@@ -22,10 +22,6 @@
     "validator": "^13.7.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.19.3",
-    "@babel/core": "^7.20.5",
-    "@babel/node": "^7.20.5",
-    "@babel/preset-env": "^7.20.2",
     "eslint": "^8.17.0",
     "nodemon": "^2.0.15"
   },
