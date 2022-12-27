@@ -1,0 +1,26 @@
+# node dependencies
+/node_modules
+
+# Firebase Credentials
+credentials.json
+
+# environmental variables file
+.env
+
+# Angular Dist Folder
+src/dist
+
+# Data Folder
+src/data
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
