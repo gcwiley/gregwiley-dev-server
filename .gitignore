@@ -7,7 +7,7 @@ credentials.json
 # environmental variables file
 .env
 
-# Angular Dist Folder
+# Angular Distribution Folder
 src/dist
 
 # Data Folder
