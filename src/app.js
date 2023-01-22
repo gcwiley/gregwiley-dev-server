@@ -30,7 +30,7 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 // allow static access to the angular client side folder
-app.use(express.static(path.join(__dirname, 'dist/wiley-dev-client')));
+app.use(express.static(path.join(__dirname, '/dist/wiley-dev-client')));
 
 // automatically parse incoming JSON to an object so we can access it in our request handlers
 app.use(express.json());
@@ -46,7 +46,7 @@ app.use(postRouter);
 // handle all other routes with angular app - returns angular app
 app.get('*', (req, res) => {
   // send back the angular index.html file
-  res.sendFile(path.join(__dirname, 'dist/wiley-dev-client', 'index.html'));
+  res.sendFile(path.join(__dirname, './dist/wiley-dev-client', 'index.html'));
 });
 
 // start the server
