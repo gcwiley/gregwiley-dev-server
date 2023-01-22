@@ -1,4 +1,4 @@
 {
-    "appService.defaultWebAppToDeploy": "/subscriptions/fd6148f2-a2b1-4370-b1aa-aa659477fc4b/AppServices/subscriptions/fd6148f2-a2b1-4370-b1aa-aa659477fc4b/resourceGroups/Web-Apps/providers/Microsoft.Web/sites/gregwiley-dev",
-    "appService.deploySubpath": "src"
+    "appService.defaultWebAppToDeploy": "/subscriptions/fd6148f2-a2b1-4370-b1aa-aa659477fc4b/AppServices/subscriptions/fd6148f2-a2b1-4370-b1aa-aa659477fc4b/resourceGroups/Web-Apps/providers/Microsoft.Web/sites/wiley-dev-test",
+    "appService.deploySubpath": "."
 }
