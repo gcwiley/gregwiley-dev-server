@@ -8,7 +8,7 @@ import { applicationDefault, initializeApp } from 'firebase-admin/app';
 // get the current file name
 const __filename = fileURLToPath(import.meta.url);
 
-// get the directory name of the current file
+// get the current directory name
 const __dirname = path.dirname(__filename);
 
 // Initialize the Firebase SDK
