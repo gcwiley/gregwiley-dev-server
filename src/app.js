@@ -21,6 +21,7 @@ import './db/db.js';
 
 // import the routers
 import { projectRouter } from './routes/project.js';
+import { issueRouter } from './routes/issue.js';
 
 // create an express instance
 const app = express();
@@ -40,6 +41,7 @@ app.use(logger('dev'));
 
 // register the routers
 app.use(projectRouter);
+app.use(issueRouter);
 
 // handle all other routes with angular app - returns angular app
 app.get('*', (req, res) => {

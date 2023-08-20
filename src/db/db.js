@@ -2,7 +2,7 @@ import process from 'process';
 import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
 
-// load environment variables
+// load the environment variables
 dotenv.config();
 
 // opens Mongoose's default connection to MongoDB
