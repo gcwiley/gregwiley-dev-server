@@ -15,14 +15,14 @@ export const newPost = async (req, res) => {
 // function to fetch all posts from database - ALL POST
 export const getPosts = async (req, res) => {
   try {
-    const projects = await Post.find({}).sort({ title: 'desc' });
+    const posts = await Post.find({}).sort({ title: 'desc' });
 
     // if no posts are found
-    if (!projects) {
+    if (!posts) {
       return res.status(404).send();
     }
 
-    res.send(projects);
+    res.send(posts);
   } catch (error) {
     res.status(500).send();
   }
@@ -71,12 +71,12 @@ export const updatePostById = async (req, res) => {
 // function to delete a post by ID - DELETE POST
 export const deletePostById = async (req, res) => {
   try {
-    // find and delete project that takes id into account
+    // find and delete post that takes id into account
     const post = await Post.findByIdAndDelete({
       _id: req.params.id,
     });
 
-    // if no project is found
+    // if no post is found
     if (!post) {
       res.status(404).send();
     }
@@ -106,7 +106,7 @@ export const getPostCount = async (req, res) => {
   }
 };
 
-// function to get the 5 most recently create projects
+// function to get the 5 most recently create posts
 export const getRecentlyCreatedPosts = async (req, res) => {
   try {
     const mostRecentPosts = await Post.find({}).sort({ createdAt: -1 }).limit(5);
