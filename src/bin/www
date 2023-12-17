@@ -1,0 +1,33 @@
+#!/usr/bin/env node
+
+// import the http module
+import http from 'http';
+
+// create an HTTP server
+const server = http.createServer()
+
+
+function normalizePort(val) {
+  // converts a string to an integer
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+};
+
+// event listener for HTTP server 'error' event
+function onError(error) {}
+
+// event listener for HTTP server "listening" event
+function onListening() {
+  var addr = ser;
+}

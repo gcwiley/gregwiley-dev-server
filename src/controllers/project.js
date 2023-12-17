@@ -4,6 +4,8 @@ import { Project } from '../models/project.js';
 export const newProject = async (req, res) => {
   const project = new Project(req.body);
 
+  console.log(req.body);
+
   try {
     await project.save();
     res.status(201).send(project);

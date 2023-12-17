@@ -7,10 +7,12 @@ dotenv.config();
 
 // opens Mongoose's default connection to MongoDB
 // connection method returns a promise
+
+// get the connection string from the .env file
+const connection_string = process.env.COSMOS_CONNECTION_STRING;
+
 mongoose
-  .connect(
-    `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@apollo.hybmo.azure.mongodb.net/${process.env.DATABASE_NAME}?retryWrites=true&w=majority`
-  )
+  .connect(connection_string)
   .then(() => {
     console.log('Successfully Connected to Database!');
   })

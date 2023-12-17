@@ -18,7 +18,7 @@ const postSchema = new Schema(
       required: true,
     },
     datePosted: {
-      type: String,
+      type: Date,
       required: true,
     },
   },
@@ -27,12 +27,8 @@ const postSchema = new Schema(
   }
 );
 
-// create the issue model
+// create the post model
 const Post = mongoose.model('Post', postSchema);
 
-// export the issue model
+// export the post model
 export { Post };
-
-
-
-
