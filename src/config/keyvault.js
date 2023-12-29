@@ -28,4 +28,5 @@ const getSecret = async (secretName, keyVaultName) => {
   }
 };
 
+// export the fuction
 export { getSecret };

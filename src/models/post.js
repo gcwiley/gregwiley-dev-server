@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 
 // create the post schema
 const postSchema = new Schema(
@@ -7,7 +7,6 @@ const postSchema = new Schema(
     title: {
       type: String,
       required: true,
-      trim: true,
     },
     author: {
       type: String,
@@ -17,9 +16,18 @@ const postSchema = new Schema(
       type: String,
       required: true,
     },
-    datePosted: {
+    comments: [{ body: String, date: Date }],
+    date: {
       type: Date,
-      required: true,
+      default: Date.now,
+    },
+    hidden: {
+      type: Boolean,
+      default: false,
+    },
+    meta: {
+      votes: Number,
+      favs: Number,
     },
   },
   {

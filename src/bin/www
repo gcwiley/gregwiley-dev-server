@@ -1,15 +1,30 @@
 #!/usr/bin/env node
 
-// import the http module
+// import module dependencies
+import { app } from '../app';
+import { debug } from 'console';
 import http from 'http';
+import process from 'process';
 
-// create an HTTP server
-const server = http.createServer()
+// get the port from environment and store in Express or use port 3000
+const port = normalizePort(process.env.PORT || '3000');
+// set the port
+app.set('port', port);
 
+// create the http server
+const server = http.createServer(app);
 
+// Start a server listening for connections.
+server.listen(port, () => {
+  console.log(`Successfully started server running on port ${port}`);
+});
+
+server.on('error', onError);
+server.on('listening', onListening);
+
+// normalize a port into a number, string, or false
 function normalizePort(val) {
-  // converts a string to an integer
-  var port = parseInt(val, 10);
+  const port = parseInt(val, 10);
 
   if (isNaN(port)) {
     // named pipe
@@ -22,12 +37,34 @@ function normalizePort(val) {
   }
 
   return false;
-};
+}
 
-// event listener for HTTP server 'error' event
-function onError(error) {}
+// event listener for HTTP server "error" event
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
 
-// event listener for HTTP server "listening" event
+  const bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
+
+  // handle specific listen error with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' require elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+// event listener for HTTP server "listening event"
 function onListening() {
-  var addr = ser;
+  const addr = server.address();
+  const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
+  debug('Listening on ' + bind);
 }

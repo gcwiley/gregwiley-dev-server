@@ -1,11 +1,11 @@
-// import required modules
+// import the required modules
 import path from 'node:path';
+import process from 'process';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-import process from 'process';
 import express from 'express';
 import logger from 'morgan';
 import { applicationDefault, initializeApp } from 'firebase-admin/app';
@@ -13,7 +13,6 @@ import { applicationDefault, initializeApp } from 'firebase-admin/app';
 // import the routers
 import { projectRouter } from './routes/project.js';
 import { postRouter } from './routes/post.js';
-
 
 // Initialize the Firebase SDK
 initializeApp({
@@ -23,15 +22,13 @@ initializeApp({
 // import the database connection
 import './db/db.js';
 
-// create an express instance
+// create an express application
 const app = express();
 
-// set the port
-const PORT = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 
 // allow static access to the angular client side folder
 app.use(express.static(path.join(__dirname, '/dist/wiley-dev-client')));
-
 
 // automatically parse incoming JSON to an object so we can access it in our request handlers
 app.use(express.json());
@@ -50,7 +47,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, './dist/wiley-dev-client', 'index.html'));
 });
 
-// start the server - listen for connections
-app.listen(PORT, () => {
-  console.log(`Successfully started server running on port ${PORT}`);
+// listen for connections
+app.listen(port, () => {
+  console.log(`Successfully started server running on port ${port}`);
 });

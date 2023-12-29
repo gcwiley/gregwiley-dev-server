@@ -5,17 +5,15 @@ import * as dotenv from 'dotenv';
 // load the environment variables
 dotenv.config();
 
-// opens Mongoose's default connection to MongoDB
-// connection method returns a promise
-
 // get the connection string from the .env file
 const connection_string = process.env.COSMOS_CONNECTION_STRING;
 
+// opens Mongoose's default connection to MongoDB
 mongoose
   .connect(connection_string)
   .then(() => {
-    console.log('Successfully Connected to Database!');
+    console.log('Successfully Connected to the database!');
   })
   .catch((error) => {
-    console.log('Unable to connect to database', error);
+    console.log('Unable to connect to the database', error);
   });
