@@ -1,4 +1,3 @@
-// import the required modules
 import path from 'node:path';
 import process from 'process';
 import { fileURLToPath } from 'url';

@@ -4,8 +4,6 @@ import { Project } from '../models/project.js';
 export const newProject = async (req, res) => {
   const project = new Project(req.body);
 
-  console.log(req.body);
-
   try {
     await project.save();
     res.status(201).send(project);
@@ -96,7 +94,7 @@ export const getProjectCount = async (req, res) => {
 
     // console type check
     console.log(typeof projectCount);
-  
+
     // if no projects are found
     if (!projectCount) {
       return res.status(404).send();
