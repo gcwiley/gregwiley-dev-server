@@ -3,7 +3,6 @@ import { Project } from '../models/project.js';
 // function to create a new project - NEW PROJECT
 export const newProject = async (req, res) => {
   const project = new Project(req.body);
-
   try {
     await project.save();
     res.status(201).send(project);
@@ -12,10 +11,12 @@ export const newProject = async (req, res) => {
   }
 };
 
-// function to fetch all projects from database - ALL PROJECTS
+// function to fetch all projects from database - GET ALL PROJECTS
 export const getProjects = async (req, res) => {
   try {
-    const projects = await Project.find({}).sort({ title: 'desc' });
+    const projects = await Project.find({});
+
+    console.log('ERROR', projects);
 
     // if no projects are found
     if (!projects) {
@@ -28,7 +29,7 @@ export const getProjects = async (req, res) => {
   }
 };
 
-// function to fetch individual project by ID - PROJECT BY ID
+// function to fetch individual project by ID - GET PROJECT BY ID
 export const getProjectById = async (req, res) => {
   const _id = req.params.id;
 
@@ -86,7 +87,7 @@ export const deleteProjectById = async (req, res) => {
   }
 };
 
-// function to count all Projects - PROJECT COUNT
+// function to count all Projects - GET PROJECT COUNT
 export const getProjectCount = async (req, res) => {
   try {
     // count all projects within database
@@ -106,16 +107,31 @@ export const getProjectCount = async (req, res) => {
   }
 };
 
-// function to get the 5 most recently create projects
+// function to get the 5 most recently create projects - 5 RECENT PROJECTS
 export const getRecentlyCreatedProjects = async (req, res) => {
   try {
-    const mostRecentProjects = await Project.find({}).sort({ createdAt: -1 }).limit(5);
+    const mostRecentProjects = await Project.find({}).limit(5);
 
+    // fix this later 
     if (!mostRecentProjects) {
       return res.status(404).send();
     }
     res.send(mostRecentProjects);
   } catch (error) {
     res.status(500).send();
+  }
+};
+
+// function to get favorite projects - GET FAVORITE PROJECTS - LIMIT 4 results
+export const getFavoriteProjects = async (req, res) => {
+  try {
+    const favoriteProjects = await Project.find({}).limit(4);
+
+    if (!favoriteProjects) {
+      return res.status(404).send();
+    }
+    res.send(favoriteProjects);
+  } catch (error) {
+    res.status(500).send(error);
   }
 };

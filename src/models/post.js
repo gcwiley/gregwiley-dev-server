@@ -7,10 +7,12 @@ const postSchema = new Schema(
     title: {
       type: String,
       required: true,
+      trim: true,
     },
     author: {
       type: String,
       required: true,
+      trim: true,
     },
     body: {
       type: String,

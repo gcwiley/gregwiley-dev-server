@@ -21,7 +21,7 @@ const projectSchema = new mongoose.Schema(
       required: true,
     },
     startDate: {
-      type: Date,
+      type: String,
       required: true,
     },
     liveUrl: {
@@ -47,8 +47,8 @@ const projectSchema = new mongoose.Schema(
   }
 );
 
-// create the project Model
+// create the project model
 const Project = mongoose.model('Project', projectSchema);
 
-// export the project Model
+// export the project model
 export { Project };

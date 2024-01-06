@@ -1,9 +1,9 @@
 import express from 'express';
 
-// Define a new router
+// define a new express router
 const router = new express.Router();
 
-// import the project controller
+// import the project controller functions
 import {
   newProject,
   getProjects,
@@ -12,28 +12,32 @@ import {
   deleteProjectById,
   getProjectCount,
   getRecentlyCreatedProjects,
+  getFavoriteProjects,
 } from '../controllers/project.js';
 
-// Route handler to create a new Project - NEW PROJECT
+// route handler to create a new Project - POST NEW PROJECT
 router.post('/api/projects', newProject);
 
-// Route handler for fetching all projects - GET ALL PROJECTS
+// route handler for fetching all projects - GET ALL PROJECTS
 router.get('/api/projects', getProjects);
 
-// Route handler to fetch individual project by ID
+// route handler to fetch individual project - GET PROJECT BY ID
 router.get('/api/projects/:id', getProjectById);
 
-// Route handler to update an existing project - UPDATE PROJECT by Id
+// route handler to update an existing project - UPDATE PROJECT BY ID
 router.patch('/api/projects/:id', updateProjectById);
 
-// Route handler to delete a project by ID - DELETE PROJECT by Id
+// route handler to delete a project by ID - DELETE PROJECT BY ID
 router.delete('/api/projects/:id', deleteProjectById);
 
-// Route handler to count all projects in database - COUNT PROJECTS
+// route handler to count all projects in database - COUNT ALL PROJECTS
 router.get('/api/project-count', getProjectCount);
 
-// Route handler to get the last 5 project created - LAST 5 PROJECTS
+// route handler to get the last 5 project created - GET 5 RECENT PROJECTS
 router.get('/api/recent-projects', getRecentlyCreatedProjects);
 
-// export the router
+// route handler to get the favorite projects
+router.get('/api/favorite-projects', getFavoriteProjects);
+
+// export the project router
 export { router as projectRouter };

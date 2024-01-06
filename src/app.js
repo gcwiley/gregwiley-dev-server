@@ -18,8 +18,11 @@ initializeApp({
   credential: applicationDefault(),
 });
 
-// import the database connection
-import './db/db.js';
+// initialize the database connection function
+import { connect } from './db/connect.js';
+
+// connect to the mongo database
+connect();
 
 // create an express application
 const app = express();

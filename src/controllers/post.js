@@ -109,7 +109,7 @@ export const getPostCount = async (req, res) => {
 // function to get the 5 most recently create posts
 export const getRecentlyCreatedPosts = async (req, res) => {
   try {
-    const mostRecentPosts = await Post.find({}).sort({ createdAt: -1 }).limit(5);
+    const mostRecentPosts = await Post.find({}).limit(5);
 
     if (!mostRecentPosts) {
       return res.status(404).send();
