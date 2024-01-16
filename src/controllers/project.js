@@ -1,3 +1,4 @@
+
 import { Project } from '../models/project.js';
 
 // function to create a new project - NEW PROJECT
@@ -16,16 +17,14 @@ export const getProjects = async (req, res) => {
   try {
     const projects = await Project.find({});
 
-    console.log('ERROR', projects);
-
     // if no projects are found
     if (!projects) {
-      return res.status(404).send();
+      return res.status(404).send('No projects found.');
     }
 
     res.send(projects);
   } catch (error) {
-    res.status(500).send();
+    res.status(500).send(`An error Occurred. ${error}`);
   }
 };
 
@@ -39,7 +38,7 @@ export const getProjectById = async (req, res) => {
 
     // if no project is found
     if (!project) {
-      return res.status(404).send();
+      return res.status(404).send('Project not found');
     }
 
     res.send(project);
@@ -59,7 +58,7 @@ export const updateProjectById = async (req, res) => {
 
     // is no project is found
     if (!project) {
-      return res.status(404).send();
+      return res.status(404).send('Project not found');
     }
 
     // send updated project back to client
@@ -79,11 +78,11 @@ export const deleteProjectById = async (req, res) => {
 
     // if no project is found
     if (!project) {
-      res.status(404).send();
+      res.status(404).send('Project not found');
     }
     res.send(project);
   } catch (error) {
-    res.status(500).send();
+    res.status(500).send(error);
   }
 };
 
@@ -98,12 +97,12 @@ export const getProjectCount = async (req, res) => {
 
     // if no projects are found
     if (!projectCount) {
-      return res.status(404).send();
+      return res.status(404).send('No projects found.');
     }
 
     res.send(projectCount);
   } catch (error) {
-    res.status(500).send();
+    res.status(500).send(error);
   }
 };
 
@@ -112,13 +111,13 @@ export const getRecentlyCreatedProjects = async (req, res) => {
   try {
     const mostRecentProjects = await Project.find({}).limit(5);
 
-    // fix this later 
+    // no recent projects found
     if (!mostRecentProjects) {
-      return res.status(404).send();
+      return res.status(404).send('No recent projects were found.');
     }
     res.send(mostRecentProjects);
   } catch (error) {
-    res.status(500).send();
+    res.status(500).send(error);
   }
 };
 
@@ -127,8 +126,9 @@ export const getFavoriteProjects = async (req, res) => {
   try {
     const favoriteProjects = await Project.find({}).limit(4);
 
+    // no favorite projects found
     if (!favoriteProjects) {
-      return res.status(404).send();
+      return res.status(404).send('No favorite projects were found.');
     }
     res.send(favoriteProjects);
   } catch (error) {

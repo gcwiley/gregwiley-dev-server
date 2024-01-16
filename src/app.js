@@ -2,11 +2,14 @@ import path from 'node:path';
 import process from 'process';
 import { fileURLToPath } from 'url';
 
+// get the current file name
 const __filename = fileURLToPath(import.meta.url);
+// get the directory name of the current file
 const __dirname = path.dirname(__filename);
 
 import express from 'express';
 import logger from 'morgan';
+
 import { applicationDefault, initializeApp } from 'firebase-admin/app';
 
 // import the routers
@@ -27,6 +30,7 @@ connect();
 // create an express application
 const app = express();
 
+// set up port
 const port = process.env.PORT || 3000;
 
 // allow static access to the angular client side folder

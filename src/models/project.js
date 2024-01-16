@@ -37,7 +37,7 @@ const projectSchema = new mongoose.Schema(
       trim: true,
       required: true,
     },
-    completed: {
+    favorite: {
       type: Boolean,
       default: false,
     },

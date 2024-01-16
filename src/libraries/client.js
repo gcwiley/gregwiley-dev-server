@@ -1,5 +1,13 @@
+import path from 'node:path';
 import process from 'process';
 import { BlobServiceClient, StorageSharedKeyCredential, newPipeline } from '@azure/storage-blob';
+import * as dotenv from 'dotenv';
+
+// load the environment variables
+dotenv.config({
+  path: path.resolve(process.cwd(), '.env'),
+  debug: true,
+});
 
 // create shared key credential from environment variables
 const sharedKeyCredential = new StorageSharedKeyCredential(
