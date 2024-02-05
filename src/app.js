@@ -1,6 +1,7 @@
 import path from 'node:path';
 import process from 'process';
 import { fileURLToPath } from 'url';
+import chalk from 'chalk';
 
 // get the current file name
 const __filename = fileURLToPath(import.meta.url);
@@ -55,5 +56,5 @@ app.get('*', (req, res) => {
 
 // listen for connections
 app.listen(port, () => {
-  console.log(`Successfully started server running on port ${port}`);
+  console.log(chalk.green(`Successfully started server running on port ${port}`));
 });

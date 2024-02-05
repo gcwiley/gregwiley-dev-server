@@ -5,7 +5,8 @@ export const newPost = async (req, res) => {
   const post = new Post(req.body);
 
   try {
-    await post.save();
+    console.log('POST BODY', post);
+    // await post.save();
     res.status(201).send(post);
   } catch (error) {
     res.status(400).send(error);
@@ -19,12 +20,12 @@ export const getPosts = async (req, res) => {
 
     // if no posts are found
     if (!posts) {
-      return res.status(404).send();
+      return res.status(404).send('No posts were found');
     }
 
     res.send(posts);
   } catch (error) {
-    res.status(500).send();
+    res.status(500).send('A server error occured.');
   }
 };
 
@@ -38,12 +39,12 @@ export const getPostById = async (req, res) => {
 
     // if no post is found
     if (!post) {
-      return res.status(404).send();
+      return res.status(404).send('Could not find post.');
     }
 
     res.send(post);
   } catch (error) {
-    res.status(500).send();
+    res.status(500).send('A server error occured.');
   }
 };
 
@@ -58,7 +59,7 @@ export const updatePostById = async (req, res) => {
 
     // is no post is found
     if (!post) {
-      return res.status(404).send();
+      return res.status(404).send('Could not find post to update.');
     }
 
     // send updated post back to client
@@ -78,7 +79,7 @@ export const deletePostById = async (req, res) => {
 
     // if no post is found
     if (!post) {
-      res.status(404).send();
+      res.status(404).send('Could not find post to delete.');
     }
     res.send(post);
   } catch (error) {
@@ -94,7 +95,7 @@ export const getPostCount = async (req, res) => {
 
     // console type check
     console.log(typeof postCount);
-  
+
     // if no posts are found
     if (!postCount) {
       return res.status(404).send();

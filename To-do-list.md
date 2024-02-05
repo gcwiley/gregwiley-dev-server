@@ -1,2 +1,5 @@
+1. fix mongoose server error
 
-add color to console text
+2. update docker file
+
+3. 

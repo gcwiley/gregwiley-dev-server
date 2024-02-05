@@ -22,7 +22,6 @@ const projectSchema = new mongoose.Schema(
     },
     startDate: {
       type: String,
-      required: true,
     },
     liveUrl: {
       type: String,

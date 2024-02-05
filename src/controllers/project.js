@@ -1,10 +1,11 @@
-
 import { Project } from '../models/project.js';
 
 // function to create a new project - NEW PROJECT
 export const newProject = async (req, res) => {
   const project = new Project(req.body);
+  
   try {
+    // saves project to database
     await project.save();
     res.status(201).send(project);
   } catch (error) {
@@ -30,6 +31,7 @@ export const getProjects = async (req, res) => {
 
 // function to fetch individual project by ID - GET PROJECT BY ID
 export const getProjectById = async (req, res) => {
+  //  find id of project from params
   const _id = req.params.id;
 
   try {
@@ -49,8 +51,10 @@ export const getProjectById = async (req, res) => {
 
 // function to update a project by id - UPDATE PROJECT
 export const updateProjectById = async (req, res) => {
+  //  find id of project from params
+  const _id = req.params.id;
+
   try {
-    const _id = req.params.id;
     const project = await Project.findByIdAndUpdate(_id, req.body, {
       new: true,
       runValidators: true,
@@ -70,15 +74,18 @@ export const updateProjectById = async (req, res) => {
 
 // function to delete a project by ID - DELETE PROJECT
 export const deleteProjectById = async (req, res) => {
+  //  find id of project from params
+  const _id = req.params.id;
+
   try {
-    // find and delete project that takes id into account
+    // find and delete project that takes _id into account
     const project = await Project.findByIdAndDelete({
-      _id: req.params.id,
+      _id: _id,
     });
 
     // if no project is found
     if (!project) {
-      res.status(404).send('Project not found');
+      res.status(404).send('Unable to delete. Project not found');
     }
     res.send(project);
   } catch (error) {
@@ -92,10 +99,7 @@ export const getProjectCount = async (req, res) => {
     // count all projects within database
     const projectCount = await Project.countDocuments({});
 
-    // console type check
-    console.log(typeof projectCount);
-
-    // if no projects are found
+    // if no projects were found
     if (!projectCount) {
       return res.status(404).send('No projects found.');
     }
