@@ -1,15 +1,20 @@
+import chalk from 'chalk';
+
+// import the project model
 import { Project } from '../models/project.js';
 
 // function to create a new project - NEW PROJECT
 export const newProject = async (req, res) => {
   const project = new Project(req.body);
-  
+
   try {
-    // saves project to database
+    // saves new project to database
     await project.save();
     res.status(201).send(project);
   } catch (error) {
     res.status(400).send(error);
+    // log the error to the console
+    console.error(chalk.red(error));
   }
 };
 

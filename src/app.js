@@ -1,4 +1,4 @@
-import path from 'node:path';
+import path from 'path';
 import process from 'process';
 import { fileURLToPath } from 'url';
 import chalk from 'chalk';
@@ -11,16 +11,17 @@ const __dirname = path.dirname(__filename);
 import express from 'express';
 import logger from 'morgan';
 
+// set up firebase
 import { applicationDefault, initializeApp } from 'firebase-admin/app';
-
-// import the routers
-import { projectRouter } from './routes/project.js';
-import { postRouter } from './routes/post.js';
 
 // Initialize the Firebase SDK
 initializeApp({
   credential: applicationDefault(),
 });
+
+// import the routers
+import { projectRouter } from './routes/project.js';
+import { postRouter } from './routes/post.js';
 
 // initialize the database connection function
 import { connect } from './db/connect.js';
@@ -34,7 +35,7 @@ const app = express();
 // set up port
 const port = process.env.PORT || 3000;
 
-// allow static access to the angular client side folder
+// allow static access to the angular client-side folder
 app.use(express.static(path.join(__dirname, '/dist/wiley-dev-client')));
 
 // automatically parse incoming JSON to an object so we can access it in our request handlers

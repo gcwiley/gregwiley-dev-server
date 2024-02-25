@@ -1,3 +1,6 @@
+// THIS IS THE CODE TO USE IN THE FUTURE!
+// TODO: FIGURE THIS OUT!
+
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
@@ -17,6 +20,19 @@ const postSchema = new Schema(
     body: {
       type: String,
       required: true,
+    },
+    comments: [{ body: String, date: Date }],
+    date: {
+      type: Date,
+      default: Date.now,
+    },
+    hidden: {
+      type: Boolean,
+      default: false,
+    },
+    meta: {
+      votes: Number,
+      favs: Number,
     },
   },
   {

@@ -14,7 +14,7 @@ import {
   getRecentlyCreatedPosts
 } from '../controllers/post.js';
 
-// Route handler to create a new Post - NEW 
+// Route handler to create a new Post - NEW POST
 router.post('/api/posts', newPost);
 
 // Route handler for fetching all posts - GET ALL POSTS

@@ -1,5 +1,3 @@
-1. fix mongoose server error
+1. update docker file
 
-2. update docker file
-
-3. 
+2.

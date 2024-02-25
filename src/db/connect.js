@@ -18,6 +18,7 @@ const dbName = process.env.DATABASE_NAME;
 
 async function connect() {
   try {
+    // set mongoose options
     mongoose.set('strictQuery', true);
     // opens mongoose's default connection to mongodb
     await mongoose.connect(uri, { dbName: dbName });

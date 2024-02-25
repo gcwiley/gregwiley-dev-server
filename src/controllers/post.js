@@ -5,7 +5,6 @@ export const newPost = async (req, res) => {
   const post = new Post(req.body);
 
   try {
-    console.log('POST BODY', post);
     // await post.save();
     res.status(201).send(post);
   } catch (error) {
@@ -25,7 +24,7 @@ export const getPosts = async (req, res) => {
 
     res.send(posts);
   } catch (error) {
-    res.status(500).send('A server error occured.');
+    res.status(500).send(`A server error occured: ${error}`);
   }
 };
 
@@ -44,7 +43,7 @@ export const getPostById = async (req, res) => {
 
     res.send(post);
   } catch (error) {
-    res.status(500).send('A server error occured.');
+    res.status(500).send(`A server error occured: ${error}`);
   }
 };
 
@@ -83,7 +82,7 @@ export const deletePostById = async (req, res) => {
     }
     res.send(post);
   } catch (error) {
-    res.status(500).send();
+    res.status(500).send(error);
   }
 };
 
@@ -93,9 +92,6 @@ export const getPostCount = async (req, res) => {
     // count all posts within database
     const postCount = await Post.countDocuments({});
 
-    // console type check
-    console.log(typeof postCount);
-
     // if no posts are found
     if (!postCount) {
       return res.status(404).send();
@@ -103,7 +99,7 @@ export const getPostCount = async (req, res) => {
 
     res.send(postCount);
   } catch (error) {
-    res.status(500).send();
+    res.status(500).send(error);
   }
 };
 
@@ -117,6 +113,6 @@ export const getRecentlyCreatedPosts = async (req, res) => {
     }
     res.send(mostRecentPosts);
   } catch (error) {
-    res.status(500).send();
+    res.status(500).send(error);
   }
 };
