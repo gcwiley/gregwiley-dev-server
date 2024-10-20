@@ -5,10 +5,12 @@ export const newPost = async (req, res) => {
   const post = new Post(req.body);
 
   try {
-    // await post.save();
-    res.status(201).send(post);
+    await post.save();
+    res.status(201).send('Successfully added post to the database.');
   } catch (error) {
     res.status(400).send(error);
+    // log the error to the console
+    console.error(error);
   }
 };
 
@@ -24,7 +26,9 @@ export const getPosts = async (req, res) => {
 
     res.send(posts);
   } catch (error) {
-    res.status(500).send(`A server error occured: ${error}`);
+    res.status(500).send(error);
+    // log the error to the console
+    console.error(error);
   }
 };
 
@@ -43,7 +47,9 @@ export const getPostById = async (req, res) => {
 
     res.send(post);
   } catch (error) {
-    res.status(500).send(`A server error occured: ${error}`);
+    res.status(500).send(error);
+    // log the error to the console
+    console.error(error);
   }
 };
 
@@ -65,6 +71,8 @@ export const updatePostById = async (req, res) => {
     res.send(post);
   } catch (error) {
     res.status(400).send(error);
+    // log the error to the console
+    console.error(error);
   }
 };
 
@@ -83,13 +91,15 @@ export const deletePostById = async (req, res) => {
     res.send(post);
   } catch (error) {
     res.status(500).send(error);
+    // log the error to the console
+    console.error(error);
   }
 };
 
 // function to count all posts - POST COUNT
 export const getPostCount = async (req, res) => {
   try {
-    // count all posts within database
+    // count all posts within the database
     const postCount = await Post.countDocuments({});
 
     // if no posts are found
@@ -100,6 +110,8 @@ export const getPostCount = async (req, res) => {
     res.send(postCount);
   } catch (error) {
     res.status(500).send(error);
+    // log the error to the console
+    console.error(error);
   }
 };
 
@@ -108,11 +120,14 @@ export const getRecentlyCreatedPosts = async (req, res) => {
   try {
     const mostRecentPosts = await Post.find({}).limit(5);
 
+    // if no recent posts are found
     if (!mostRecentPosts) {
       return res.status(404).send();
     }
     res.send(mostRecentPosts);
   } catch (error) {
     res.status(500).send(error);
+    // log the error to the console
+    console.error(error);
   }
 };

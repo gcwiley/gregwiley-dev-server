@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import chalk from 'chalk';
 import * as dotenv from 'dotenv';
 
-// load the environment variables
+// load in the environment variables
 dotenv.config({
   path: path.resolve(process.cwd(), '.env'),
   debug: true,
@@ -22,7 +22,7 @@ async function connect() {
     mongoose.set('strictQuery', true);
     // opens mongoose's default connection to mongodb
     await mongoose.connect(uri, { dbName: dbName });
-    console.log(chalk.blue(`Successfully connected to the database - ${dbName}`, '\n'));
+    console.log(chalk.blue(`Successfully connected to the NOSQL database - ${dbName}`, '\n'));
   } catch (error) {
     console.error(chalk.red('\n', `Unable to connect to the ${dbName} database: ${error}`, '\n'));
   }

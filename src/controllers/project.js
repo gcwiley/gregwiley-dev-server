@@ -1,5 +1,3 @@
-import chalk from 'chalk';
-
 // import the project model
 import { Project } from '../models/project.js';
 
@@ -8,13 +6,13 @@ export const newProject = async (req, res) => {
   const project = new Project(req.body);
 
   try {
-    // saves new project to database
+    // saves new project to the database
     await project.save();
-    res.status(201).send(project);
+    res.status(201).send('Successfully added post to database');
   } catch (error) {
     res.status(400).send(error);
     // log the error to the console
-    console.error(chalk.red(error));
+    console.error(error);
   }
 };
 
@@ -27,10 +25,12 @@ export const getProjects = async (req, res) => {
     if (!projects) {
       return res.status(404).send('No projects found.');
     }
-
+    // send all projects to client
     res.send(projects);
   } catch (error) {
-    res.status(500).send(`An error Occurred. ${error}`);
+    res.status(500).send(error);
+    // log the error to the console
+    console.error(error);
   }
 };
 
@@ -50,7 +50,9 @@ export const getProjectById = async (req, res) => {
 
     res.send(project);
   } catch (error) {
-    res.status(500).send();
+    res.status(500).send(error);
+    // log the error to the console
+    console.error(error);
   }
 };
 
@@ -74,6 +76,8 @@ export const updateProjectById = async (req, res) => {
     res.send(project);
   } catch (error) {
     res.status(400).send(error);
+    // log the error to the console
+    console.error(error);
   }
 };
 
@@ -92,9 +96,11 @@ export const deleteProjectById = async (req, res) => {
     if (!project) {
       res.status(404).send('Unable to delete. Project not found');
     }
-    res.send(project);
+    res.send('Project successfully deleted from database');
   } catch (error) {
     res.status(500).send(error);
+    // log the error to the console
+    console.error(error);
   }
 };
 
@@ -109,9 +115,12 @@ export const getProjectCount = async (req, res) => {
       return res.status(404).send('No projects found.');
     }
 
+    // send project count to client
     res.send(projectCount);
   } catch (error) {
     res.status(500).send(error);
+    // if error, log to console
+    console.error(error);
   }
 };
 
@@ -127,6 +136,8 @@ export const getRecentlyCreatedProjects = async (req, res) => {
     res.send(mostRecentProjects);
   } catch (error) {
     res.status(500).send(error);
+    // log the error to the console
+    console.error(error);
   }
 };
 
@@ -142,5 +153,7 @@ export const getFavoriteProjects = async (req, res) => {
     res.send(favoriteProjects);
   } catch (error) {
     res.status(500).send(error);
+    // log the error to the console
+    console.error(error);
   }
 };
