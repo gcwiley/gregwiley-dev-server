@@ -22,7 +22,7 @@ async function connect() {
     mongoose.set('strictQuery', true);
     // opens mongoose's default connection to mongodb
     await mongoose.connect(uri, { dbName: dbName });
-    console.log(chalk.blue(`Successfully connected to the NOSQL database - ${dbName}`, '\n'));
+    console.log(chalk.blue(`Successfully connected to the NOSQL database - ${dbName} on COSMOS`, '\n'));
   } catch (error) {
     console.error(chalk.red('\n', `Unable to connect to the ${dbName} database: ${error}`, '\n'));
   }

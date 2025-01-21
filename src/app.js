@@ -2,6 +2,7 @@ import path from 'path';
 import process from 'process';
 import { fileURLToPath } from 'url';
 import chalk from 'chalk';
+import admin from 'firebase-admin';
 
 // get the current file name
 const __filename = fileURLToPath(import.meta.url);
@@ -11,12 +12,12 @@ const __dirname = path.dirname(__filename);
 import express from 'express';
 import logger from 'morgan';
 
-// set up firebase
-import { applicationDefault, initializeApp } from 'firebase-admin/app';
+// import the credentials
+import { serviceAccount } from '../credentials/service-account.js';
 
-// Initialize the Firebase SDK
-initializeApp({
-  credential: applicationDefault(),
+// initialize the firebase SDK
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
 });
 
 // import the routers
@@ -36,7 +37,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // allow static access to the angular client-side folder
-app.use(express.static(path.join(__dirname, '/dist/wiley-dev-client')));
+app.use(express.static(path.join(__dirname, '/dist/gregwiley-dev-client/browser')));
 
 // automatically parse incoming JSON to an object so we can access it in our request handlers
 app.use(express.json());
@@ -52,7 +53,7 @@ app.use(postRouter);
 // handle all other routes with angular app - returns angular app
 app.get('*', (req, res) => {
   // send back the angular index.html file
-  res.sendFile(path.join(__dirname, './dist/wiley-dev-client', 'index.html'));
+  res.sendFile(path.join(__dirname, './dist/gregwiley-dev-client/browser', 'index.html'));
 });
 
 // listen for connections

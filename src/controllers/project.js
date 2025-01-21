@@ -9,9 +9,10 @@ export const newProject = async (req, res) => {
     // saves new project to the database
     await project.save();
     res.status(201).send('Successfully added post to database');
+    console.log('Successfully added a project to the database');
   } catch (error) {
     res.status(400).send(error);
-    // log the error to the console
+    // if error, log the error to the console
     console.error(error);
   }
 };
@@ -23,7 +24,7 @@ export const getProjects = async (req, res) => {
 
     // if no projects are found
     if (!projects) {
-      return res.status(404).send('No projects found.');
+      return res.status(404).json('No projects found.');
     }
     // send all projects to client
     res.send(projects);
@@ -45,7 +46,7 @@ export const getProjectById = async (req, res) => {
 
     // if no project is found
     if (!project) {
-      return res.status(404).send('Project not found');
+      return res.status(404).json('Project not found');
     }
 
     res.send(project);
@@ -58,6 +59,7 @@ export const getProjectById = async (req, res) => {
 
 // function to update a project by id - UPDATE PROJECT
 export const updateProjectById = async (req, res) => {
+  console.log('TEST',req.body);
   //  find id of project from params
   const _id = req.params.id;
 
@@ -69,7 +71,7 @@ export const updateProjectById = async (req, res) => {
 
     // is no project is found
     if (!project) {
-      return res.status(404).send('Project not found');
+      return res.status(404).json('Project not found');
     }
 
     // send updated project back to client
@@ -94,7 +96,7 @@ export const deleteProjectById = async (req, res) => {
 
     // if no project is found
     if (!project) {
-      res.status(404).send('Unable to delete. Project not found');
+      res.status(404).json('Unable to delete. Project not found');
     }
     res.send('Project successfully deleted from database');
   } catch (error) {
@@ -127,7 +129,7 @@ export const getProjectCount = async (req, res) => {
 // function to get the 5 most recently create projects - 5 RECENT PROJECTS
 export const getRecentlyCreatedProjects = async (req, res) => {
   try {
-    const mostRecentProjects = await Project.find({}).limit(5);
+    const mostRecentProjects = await Project.find({});
 
     // no recent projects found
     if (!mostRecentProjects) {
