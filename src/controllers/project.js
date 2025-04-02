@@ -3,14 +3,24 @@ import { Project } from '../models/project.js';
 
 // function to create a new project - NEW PROJECT
 export const newProject = async (req, res) => {
-   const project = new Project(req.body);
+   const project = new Project({
+      title: req.body.title,
+      status: req.body.status,
+      category: req.body.category,
+      language: req.body.language,
+      startDate: new Date(req.body.startDate),
+      liveUrl: req.body.liveUrl,
+      gitUrl: req.body.gitUrl,
+      description: req.body.description,
+      favorite: req.body.favorite,
+   });
    try {
       // saves new project to the database
       await project.save();
-      res.status(201).json('Successfully added post to database');
+      res.status(201).json({ message: 'Successfully added project to database.' });
    } catch (error) {
-      console.error(error);
-      res.status(400).send(error);
+      console.error('Internal Server Error', error);
+      res.status(500).json({ message: 'Internal Server Error' });
    }
 };
 
@@ -27,7 +37,7 @@ export const getProjects = async (req, res) => {
       res.send(projects);
    } catch (error) {
       console.error(error);
-      res.status(500).send(error);
+      res.status(500).json({ message: 'Internal Server Error' });
    }
 };
 
@@ -42,13 +52,13 @@ export const getProjectById = async (req, res) => {
 
       // if no project is found
       if (!project) {
-         return res.status(404).json('Project not found');
+         return res.status(404).json({ message: 'Project Not Found.' });
       }
 
-      res.send(project);
+      res.status(200).json(project);
    } catch (error) {
       console.error(error);
-      res.status(500).send(error);
+      res.status(500).json({ message: 'Internal Server Error.' });
    }
 };
 
@@ -69,10 +79,11 @@ export const updateProjectById = async (req, res) => {
       }
 
       // send updated project back to client
-      res.send(project);
+      res.status(200).json(project);
    } catch (error) {
+      // comment
       console.error(error);
-      res.status(400).send(error);
+      res.status(500).json({ message: 'Internal Server Error' });
    }
 };
 
@@ -91,29 +102,23 @@ export const deleteProjectById = async (req, res) => {
       if (!project) {
          res.status(404).json('Unable to delete. Project not found');
       }
-      res.send('Project successfully deleted from database');
+      res.status(204).json('Project successfully deleted from database');
    } catch (error) {
-      res.status(500).send(error);
       console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
    }
 };
 
 // function to count all Projects - GET PROJECT COUNT
 export const getProjectCount = async (req, res) => {
    try {
-      // count all projects within database
       const projectCount = await Project.countDocuments({});
 
-      // if no projects were found
-      if (!projectCount) {
-         return res.status(404).send('No projects found.');
-      }
-
       // send project count to client
-      res.send(projectCount);
+      res.status(200).json(projectCount);
    } catch (error) {
-      res.status(500).send(error);
       console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
    }
 };
 
@@ -126,25 +131,26 @@ export const getRecentlyCreatedProjects = async (req, res) => {
       if (!mostRecentProjects) {
          return res.status(404).send('No recent projects were found.');
       }
-      res.send(mostRecentProjects);
+      res.status(200).json(mostRecentProjects);
    } catch (error) {
-      res.status(500).send(error);
       console.error(error);
+      res.status(500).send({ message: 'Internal Server Error' });
    }
 };
 
 // function to get favorite projects - GET FAVORITE PROJECTS - LIMIT 4 results
 export const getFavoriteProjects = async (req, res) => {
    try {
-      const favoriteProjects = await Project.find({}).limit(4);
+      // fix this!
+      const favoriteProjects = await Project.find({});
 
       // no favorite projects found
       if (!favoriteProjects) {
-         return res.status(404).send('No favorite projects were found.');
+         return res.status(404).json({ message: 'No favorite projects were found.' });
       }
-      res.send(favoriteProjects);
+      res.status(200).json(favoriteProjects);
    } catch (error) {
       console.error(error);
-      res.status(500).send(error);
+      res.status(500).json({ message: 'Internal Server Error' });
    }
 };
