@@ -34,13 +34,17 @@ export const getProjects = async (req, res) => {
 
       // if no projects are found, handle the empty result
       if (projects.length === 0) {
-         return res.status(404).json({ message: 'No projects found.' });
+         return res.status(404).json({ success: false, message: 'No projects found.' });
       }
       // send the list of projects to the client
       res.status(200).json(projects);
    } catch (error) {
       console.error('Error fetching projects:', error);
-      res.status(500).json({ message: 'Error fetching projects', error: error.message });
+      res.status(500).json({
+         successs: false,
+         message: 'Error fetching projects',
+         error: error.message,
+      });
    }
 };
 
@@ -160,14 +164,24 @@ export const updateProjectById = async (req, res) => {
 
       // is project is not found
       if (!project) {
-         return res.status(404).json({ message: 'No project with that ID was found.' });
+         return res
+            .status(404)
+            .json({ success: true, message: 'No project with that ID was found.' });
       }
 
       // send updated project back to client
-      res.status(200).json({ message: 'Album updated successfully.', project: project });
+      res.status(200).json({
+         success: true,
+         message: 'Album updated successfully.',
+         project: project,
+      });
    } catch (error) {
       console.error('Error updating project:', error);
-      res.status(500).json({ message: 'Error updating project.', error: error.message });
+      res.status(500).json({
+         success: false,
+         message: 'Error updating project.',
+         error: error.message,
+      });
    }
 };
 
@@ -184,12 +198,16 @@ export const deleteProjectById = async (req, res) => {
 
       // if project is not found
       if (!project) {
-         res.status(404).json({ message: 'No project with that ID was found.' });
+         res.status(404).json({ success: false, message: 'No project with that ID was found.' });
       }
-      res.status(200).json({ message: 'Project deleted successfully.' });
+      res.status(200).json({ successs: true, message: 'Project deleted successfully.' });
    } catch (error) {
       console.error('Error deleting project.', error);
-      res.status(500).json({ message: 'Error deleting project', error: error.message });
+      res.status(500).json({
+         successs: true,
+         message: 'Error deleting project',
+         error: error.message,
+      });
    }
 };
 
@@ -213,7 +231,7 @@ export const getProjectCount = async (req, res) => {
 // function to get the 5 most recently create projects - 5 RECENT PROJECTS
 export const getRecentlyCreatedProjects = async (req, res) => {
    try {
-      const mostRecentProjects = await Project.find({}).sort({ createdAt: -1 }).limit(5);
+      const mostRecentProjects = await Project.find({}).limit(5);
 
       // no recent projects found
       if (!mostRecentProjects) {
@@ -271,7 +289,9 @@ export const searchProjects = async (req, res) => {
       });
 
       if (projects.length === 0) {
-         return res.status(404).json({ message: 'No projects found matching your search query.' });
+         return res
+            .status(404)
+            .json({ success: false, message: 'No projects found matching your search query.' });
       }
 
       res.status(200).json({

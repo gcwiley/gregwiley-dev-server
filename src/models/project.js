@@ -26,6 +26,7 @@ const projectSchema = new Schema(
          type: String,
          required: [true, 'Title is required.'],
          trim: true,
+         maxlength: [100, 'Title cannot exceed 100 characters.'],
          index: true, // improves query performance
       },
       // project status

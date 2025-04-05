@@ -7,7 +7,7 @@ import * as dotenv from 'dotenv';
 // load environment variables
 dotenv.config({
    path: path.resolve(process.cwd(), '.env'),
-   debug: true,
+   debug: process.env.NODE_ENV === 'development', // only debug in development
    encoding: 'UTF-8',
 });
 

@@ -4,5 +4,7 @@
     "appService.zipIgnorePattern": [
         "node_modules{,/**}",
         ".vscode{,/**}"
-    ]
+    ],
+    "geminicodeassist.chat.collapseCodeBlocksByDefault": true,
+    "geminicodeassist.codeGenerationPaneViewEnabled": true
 }
