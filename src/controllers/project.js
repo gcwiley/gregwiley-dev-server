@@ -32,16 +32,16 @@ export const getProjects = async (req, res) => {
    try {
       const projects = await Project.find({});
 
-      // if no projects are found, handle the empty result
+      // if no projects are found
       if (projects.length === 0) {
          return res.status(404).json({ success: false, message: 'No projects found.' });
       }
-      // send the list of projects to the client
+      // send the list of projects back to the client
       res.status(200).json(projects);
    } catch (error) {
       console.error('Error fetching projects:', error);
       res.status(500).json({
-         successs: false,
+         success: false,
          message: 'Error fetching projects',
          error: error.message,
       });
@@ -116,7 +116,7 @@ export const getProjectById = async (req, res) => {
 
    try {
       // filters by _id
-      const project = await Project.findById({ _id });
+      const project = await Project.findById(_id);
 
       // if project is not found, handle the empty result
       if (!project) {
@@ -192,19 +192,17 @@ export const deleteProjectById = async (req, res) => {
 
    try {
       // find and delete project that takes _id into account
-      const project = await Project.findByIdAndDelete({
-         _id: _id,
-      });
+      const project = await Project.findByIdAndDelete(_id);
 
       // if project is not found
       if (!project) {
-         res.status(404).json({ success: false, message: 'No project with that ID was found.' });
+         return res.status(404).json({ success: false, message: 'No project with that ID was found.' });
       }
-      res.status(200).json({ successs: true, message: 'Project deleted successfully.' });
+      res.status(200).json({ success: true, message: 'Project deleted successfully.' });
    } catch (error) {
       console.error('Error deleting project.', error);
       res.status(500).json({
-         successs: true,
+         success: true,
          message: 'Error deleting project',
          error: error.message,
       });
@@ -231,7 +229,7 @@ export const getProjectCount = async (req, res) => {
 // function to get the 5 most recently create projects - 5 RECENT PROJECTS
 export const getRecentlyCreatedProjects = async (req, res) => {
    try {
-      const mostRecentProjects = await Project.find({}).limit(5);
+      const mostRecentProjects = await Project.find({}).sort({ createdAt: -1}).limit(5);
 
       // no recent projects found
       if (!mostRecentProjects) {
@@ -251,7 +249,7 @@ export const getRecentlyCreatedProjects = async (req, res) => {
 // function to get favorite projects - GET FAVORITE PROJECTS
 export const getFavoriteProjects = async (req, res) => {
    try {
-      const favoriteProjects = await Project.find({});
+      const favoriteProjects = await Project.find({ favorite: true });
 
       // if favorite projects are not found
       if (!favoriteProjects) {
@@ -324,7 +322,7 @@ export const getProjectsByCategory = async (req, res) => {
       // find projects that match the specified category
       const projects = await Project.find({ category: category });
 
-      if (!projects.length === 0) {
+      if (projects.length === 0) {
          return res.status(404).json({
             success: false,
             message: 'No projects found matching the specified category.',

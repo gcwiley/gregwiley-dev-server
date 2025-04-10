@@ -6,21 +6,21 @@ const postSchema = new Schema(
   {
     title: {
       type: String,
-      required: true,
+      required: [true, 'Post title is required.'],
       trim: true,
+      maxlength: [150, 'Title cannot exceed 150 characters.'],
+      index: true,
     },
     author: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'User',
       required: true,
       trim: true,
     },
     body: {
       type: String,
-      required: true,
-    },
-    date: {
-      type: Date,
-      default: Date.now,
+      required: [true, 'Post body cannot be empty.'],
+      trim: true,
     },
     meta: {
       votes: Number,
@@ -28,7 +28,7 @@ const postSchema = new Schema(
     },
   },
   {
-    timestamps: true,
+    timestamps: true, // adds createdAt and updatedAt timestamps automatically
   }
 );
 
