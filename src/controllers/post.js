@@ -27,7 +27,6 @@ export const getPosts = async (req, res) => {
     res.send(posts);
   } catch (error) {
     res.status(500).send(error);
-    // log the error to the console
     console.error(error);
   }
 };

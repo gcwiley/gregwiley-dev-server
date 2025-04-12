@@ -27,9 +27,6 @@ import { postRouter } from './routes/post.js';
 // initialize the database connection function
 import { connect } from './db/connect.js';
 
-// connect to the mongo database
-connect();
-
 // create an express application
 const app = express();
 
@@ -46,17 +43,33 @@ app.use(express.urlencoded({ extended: true }));
 // create a logger middleware
 app.use(logger('dev'));
 
-// register the routers
+// register the routers - router setup
 app.use(projectRouter);
 app.use(postRouter);
 
-// handle all other routes with angular app - returns angular app
+// handle all other routes with angular app - returns angular app - catch all route
 app.get('*', (req, res) => {
   // send back the angular index.html file
   res.sendFile(path.join(__dirname, './dist/gregwiley-dev-client/browser', 'index.html'));
 });
 
-// listen for connections
-app.listen(port, () => {
-  console.log(chalk.green(`Successfully started server running on port ${port}`));
-});
+
+// function to start the server
+const startServer = async () => {
+  try {
+    // connect to the mongo database and wait for it
+    await connect();
+    console.log(chalk.blue('Successfully connected to MongoDB.'));
+
+    // listen for connections only after DB connection is successful
+    app.listen(port, () => {
+      console.log(chalk.green(`Successfully started server running on port ${port}`));
+    });
+  } catch (error) {
+    console.error(chalk.red('Failed to connect to MongoDB:', error));
+    process.exit(1); // exit if DB connection fails on startup
+  }
+};
+
+// start the server
+startServer();

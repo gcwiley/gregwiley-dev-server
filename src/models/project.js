@@ -108,6 +108,9 @@ const projectSchema = new Schema(
   }
 );
 
+// index the createdAt field for sorting
+projectSchema.index({ createdAt: -1 }); // -1 indincates descending order is common for this sort
+
 // create the project model
 const Project = mongoose.model('Project', projectSchema);
 
