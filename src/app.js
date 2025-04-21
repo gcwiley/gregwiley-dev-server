@@ -22,7 +22,6 @@ admin.initializeApp({
 
 // import the routers
 import { projectRouter } from './routes/project.js';
-import { postRouter } from './routes/post.js';
 
 // initialize the database connection function
 import { connect } from './db/connect.js';
@@ -45,14 +44,12 @@ app.use(logger('dev'));
 
 // register the routers - router setup
 app.use(projectRouter);
-app.use(postRouter);
 
 // handle all other routes with angular app - returns angular app - catch all route
 app.get('*', (req, res) => {
   // send back the angular index.html file
   res.sendFile(path.join(__dirname, './dist/gregwiley-dev-client/browser', 'index.html'));
 });
-
 
 // function to start the server
 const startServer = async () => {

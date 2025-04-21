@@ -36,7 +36,7 @@ const projectSchema = new Schema(
     // project status
     status: {
       type: String,
-      required: true,
+      required: [true, 'Status is required.'],
       enum: {
         values: projectEnums.status,
         message: `Status must be one of: ${projectEnums.status.join(', ')}`,
@@ -58,10 +58,10 @@ const projectSchema = new Schema(
     // project language
     language: {
       type: String,
-      required: true,
+      required: [true, 'Project Language is required.'],
       enum: {
         values: projectEnums.language,
-        message: `Lanuage must be one of: ${projectEnums.language.join(', ')}`,
+        message: `Language must be one of: ${projectEnums.language.join(', ')}`,
       },
       default: 'JavaScript',
       index: true,
@@ -109,7 +109,7 @@ const projectSchema = new Schema(
 );
 
 // index the createdAt field for sorting
-projectSchema.index({ createdAt: -1 }); // -1 indincates descending order is common for this sort
+projectSchema.index({ createdAt: -1 }); // -1 indicates descending order is common for this sort
 
 // create the project model
 const Project = mongoose.model('Project', projectSchema);

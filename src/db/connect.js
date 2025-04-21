@@ -12,12 +12,12 @@ dotenv.config({
 });
 
 // get the connection string and the database name from the environment variables.
-const uri = process.env.COSMOS_CONNECTION_STRING;
+const uri = process.env.MONGO_CONNECTION_STRING;
 const dbName = process.env.DATABASE_NAME;
 
 // validate environment variables - ensures required variables are define
 if (!uri) {
-   throw new Error('COSMOS_CONNECTION_STRING is not defined in the enviroment variables');
+   throw new Error('MONGO_CONNECTION_STRING is not defined in the enviroment variables');
 }
 
 if (!dbName) {
@@ -61,6 +61,7 @@ async function connect() {
       });
    } catch (error) {
       console.error(chalk.red('\n', `Unable to connect to the ${dbName} database: ${error}`, '\n'));
+      process.exit(1); // application exit
    }
 }
 

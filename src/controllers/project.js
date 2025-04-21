@@ -21,7 +21,7 @@ export const newProject = async (req, res) => {
     console.error('Error creating project.', error);
     res.status(500).json({
       success: false,
-      message: 'Error creating project',
+      message: 'Error creating project.',
       error: error.message,
     });
   }
@@ -34,7 +34,7 @@ export const getProjects = async (req, res) => {
 
     // if no projects are found
     if (projects.length === 0) {
-      console.error('no projects found');
+      console.error('No projects found.');
       return res.status(404).json({ success: false, message: 'No projects found.' });
     }
     // send the list of projects back to the client
@@ -43,13 +43,13 @@ export const getProjects = async (req, res) => {
     console.error('Error fetching projects:', error);
     res.status(500).json({
       success: false,
-      message: 'Error fetching projects',
+      message: 'Error fetching projects. ',
       error: error.message,
     });
   }
 };
 
-// function to fetch all projects from the database - GET PROJECT PAGINATION
+// function to fetch all paginated projects from database - GET PROJECT PAGINATION
 export const getPaginatedProjects = async (req, res) => {
   try {
     // extract and validate pagination parameters from query string (with default values)
