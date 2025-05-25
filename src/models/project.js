@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
-// configuration object for enums
+// configuration object for project enums
 const projectEnums = {
   status: ['active', 'completed', 'archived'],
   category: ['web', 'mobile', 'desktop'],
@@ -32,6 +32,7 @@ const projectSchema = new Schema(
       trim: true,
       maxlength: [100, 'Title cannot exceed 100 characters.'],
       index: true, // improves query performance
+      unique: true, // titles must be unique
     },
     // project status
     status: {
@@ -53,9 +54,17 @@ const projectSchema = new Schema(
         message: `Category must be one of: ${projectEnums.category.join(', ')}`,
       },
       default: 'web', // default value
+      lowercase: true,
       index: true,
     },
-    // project language
+    // tags
+    tags: {
+      type: [String], // array of strings
+      required: false,
+      default: [],
+      index: true,
+    },
+    // programming language
     language: {
       type: String,
       required: [true, 'Project Language is required.'],
@@ -70,6 +79,7 @@ const projectSchema = new Schema(
     startDate: {
       type: Date, // use Date for better date handling
       required: [true, 'Start date is required.'],
+      default: Date.now, // sets the default date to now
     },
     // URL of the live project
     liveUrl: {
@@ -114,5 +124,4 @@ projectSchema.index({ createdAt: -1 }); // -1 indicates descending order is comm
 // create the project model
 const Project = mongoose.model('Project', projectSchema);
 
-// export the project model
 export { Project };

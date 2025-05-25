@@ -30,7 +30,7 @@ export const newProject = async (req, res) => {
 // function to fetch all projects from database - GET ALL PROJECTS
 export const getProjects = async (req, res) => {
   try {
-    const projects = await Project.find({});
+    const projects = await Project.find({}).lean();
 
     // if no projects are found
     if (projects.length === 0) {
@@ -38,7 +38,11 @@ export const getProjects = async (req, res) => {
       return res.status(404).json({ success: false, message: 'No projects found.' });
     }
     // send the list of projects back to the client
-    res.status(200).json(projects);
+    res.status(200).json({
+      success: true,
+      message: 'Successfully retrieved projects.',
+      data: projects,
+    });
   } catch (error) {
     console.error('Error fetching projects:', error);
     res.status(500).json({
@@ -240,7 +244,13 @@ export const getRecentlyCreatedProjects = async (req, res) => {
     if (!mostRecentProjects) {
       return res.status(404).json({ success: false, message: 'No recent projects found.' });
     }
-    res.status(200).json(mostRecentProjects);
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: 'Successfully fetched most recently created projects.',
+        date: mostRecentProjects,
+      });
   } catch (error) {
     console.error('Error fetching recent projects:', error);
     res.status(500).json({
@@ -303,7 +313,7 @@ export const searchProjects = async (req, res) => {
   } catch (error) {
     console.error('Error searching projects:', error);
     res.status(500).json({
-      sucesss: false,
+      success: false,
       message: 'Error searching projects.',
       error: error.message,
     });

@@ -1,9 +1,8 @@
 import express from 'express';
 
-// define a new express router
 const router = new express.Router();
 
-// import the project controller functions
+// project controller functions
 import {
   newProject,
   getProjects,
@@ -31,13 +30,12 @@ router.patch('/api/projects/:id', updateProjectById);
 router.delete('/api/projects/:id', deleteProjectById);
 
 // route handler to count all projects in database - COUNT ALL PROJECTS
-router.get('/api/project-count', getProjectCount);
+router.get('/api/projects/count', getProjectCount);
 
 // route handler to get the last 5 project created - GET 5 RECENT PROJECTS
-router.get('/api/recent-projects', getRecentlyCreatedProjects);
+router.get('/api/projects/recent', getRecentlyCreatedProjects);
 
 // route handler to get the favorite projects
-router.get('/api/favorite-projects', getFavoriteProjects);
+router.get('/api/projects/favorites', getFavoriteProjects);
 
-// export the project router
 export { router as projectRouter };
