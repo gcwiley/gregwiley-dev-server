@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import chalk from 'chalk';
 import * as dotenv from 'dotenv';
 
-// load environment variables
+// environment variables
 dotenv.config({
    path: path.resolve(process.cwd(), '.env'),
    debug: process.env.NODE_ENV === 'development', // only debug in development
@@ -65,5 +65,4 @@ async function connect() {
    }
 }
 
-// export the connect function
 export { connect };

@@ -16,7 +16,9 @@ export const newProject = async (req, res) => {
   try {
     // saves new project to the database
     await project.save();
-    res.status(201).json({ success: true, message: 'Successfully added project to database.' });
+    res
+      .status(201)
+      .json({ success: true, message: 'Successfully added project to database.', data: project });
   } catch (error) {
     console.error('Error creating project.', error);
     res.status(500).json({
@@ -173,7 +175,9 @@ export const updateProjectById = async (req, res) => {
 
     // is project is not found
     if (!project) {
-      return res.status(404).json({ success: true, message: 'No project with that ID was found.' });
+      return res
+        .status(404)
+        .json({ success: false, message: 'No project with that ID was found.' });
     }
 
     // send updated project back to client
@@ -244,13 +248,11 @@ export const getRecentlyCreatedProjects = async (req, res) => {
     if (!mostRecentProjects) {
       return res.status(404).json({ success: false, message: 'No recent projects found.' });
     }
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: 'Successfully fetched most recently created projects.',
-        date: mostRecentProjects,
-      });
+    res.status(200).json({
+      success: true,
+      message: 'Successfully fetched most recently created projects.',
+      data: mostRecentProjects,
+    });
   } catch (error) {
     console.error('Error fetching recent projects:', error);
     res.status(500).json({

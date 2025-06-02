@@ -80,6 +80,13 @@ const projectSchema = new Schema(
       type: Date, // use Date for better date handling
       required: [true, 'Start date is required.'],
       default: Date.now, // sets the default date to now
+      validate: {
+        validator: function (value) {
+          // value is the date being set
+          return value <= new Date();
+        },
+        message: 'Start date cannot be in the future.'
+      }
     },
     // URL of the live project
     liveUrl: {
