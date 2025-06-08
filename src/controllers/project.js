@@ -36,7 +36,6 @@ export const getProjects = async (req, res) => {
 
     // if no projects are found
     if (projects.length === 0) {
-      console.error('No projects found.');
       return res.status(404).json({ success: false, message: 'No projects found.' });
     }
     // send the list of projects back to the client
