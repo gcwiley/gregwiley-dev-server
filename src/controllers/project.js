@@ -77,7 +77,7 @@ export const getPaginatedProjects = async (req, res) => {
     if (projects.length === 0 && totalProjects > 0) {
       return res.status(404).json({
         success: false,
-        message: 'No projects founds on this page.',
+        message: 'No projects found on this page.',
       });
     }
 
@@ -238,7 +238,7 @@ export const getProjectCount = async (req, res) => {
   }
 };
 
-// function to get the 5 most recently create projects - 5 RECENT PROJECTS
+// function to get the 5 most recently created projects - 5 RECENT PROJECTS
 export const getRecentlyCreatedProjects = async (req, res) => {
   try {
     const mostRecentProjects = await Project.find({}).sort({ createdAt: -1 }).limit(5);
