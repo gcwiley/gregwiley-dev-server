@@ -2,16 +2,38 @@ import { Project } from '../models/project.js';
 
 // function to create a new project - NEW PROJECT
 export const newProject = async (req, res) => {
+  const { title, status, category, language, startDate, liveUrl, gitUrl, description, favorite } =
+    req.body;
+
+  // basic validation for required fields
+  if (
+    !title ||
+    !status ||
+    !category ||
+    !language ||
+    !startDate ||
+    !liveUrl ||
+    !gitUrl ||
+    !description ||
+    !favorite
+  ) {
+    return res.status(400).json({
+      success: false,
+      message:
+        'Missing required fields. Please provide title, status, category, startDate, liveUrl, gitUrl, description, favorite',
+    });
+  }
+
   const project = new Project({
-    title: req.body.title,
-    status: req.body.status,
-    category: req.body.category,
-    language: req.body.language,
+    title,
+    status,
+    category,
+    language,
     startDate: new Date(req.body.startDate),
-    liveUrl: req.body.liveUrl,
-    gitUrl: req.body.gitUrl,
-    description: req.body.description,
-    favorite: req.body.favorite,
+    liveUrl,
+    gitUrl,
+    description,
+    favorite: favorite || false,
   });
   try {
     // saves new project to the database
@@ -221,7 +243,7 @@ export const deleteProjectById = async (req, res) => {
   }
 };
 
-// function to count all Projects - GET PROJECT COUNT
+// function to count all projects in database - GET PROJECT COUNT
 export const getProjectCount = async (req, res) => {
   try {
     const projectCount = await Project.countDocuments({});
@@ -229,22 +251,22 @@ export const getProjectCount = async (req, res) => {
     // send project count to client
     res.status(200).json({ success: true, message: 'Project count', data: projectCount });
   } catch (error) {
-    console.error('Error fetching project count', error);
+    console.error('Error fetching project count.', error);
     res.status(500).json({
       success: false,
-      message: 'Error fetching project count',
+      message: 'Error fetching project count.',
       error: error.message,
     });
   }
 };
 
-// function to get the 5 most recently created projects - 5 RECENT PROJECTS
+// function to get the 5 most recently created projects - GET 5 RECENT PROJECTS
 export const getRecentlyCreatedProjects = async (req, res) => {
   try {
     const mostRecentProjects = await Project.find({}).sort({ createdAt: -1 }).limit(5);
 
     // no recent projects found
-    if (!mostRecentProjects) {
+    if (!mostRecentProjects || mostRecentProjects.length === 0) {
       return res.status(404).json({ success: false, message: 'No recent projects found.' });
     }
     res.status(200).json({

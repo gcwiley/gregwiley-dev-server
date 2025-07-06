@@ -3,8 +3,8 @@ const { Schema } = mongoose;
 
 // configuration object for project enums
 const projectEnums = {
-  status: ['active', 'completed', 'archived'],
-  category: ['web', 'mobile', 'desktop'],
+  status: ['not-started', 'in-development', 'completed', 'archived'],
+  category: ['tutorial', 'personal-project', 'arc-gis-project'],
   language: ['JavaScript', 'Python', 'Dart'], // keep languages defined here.
 };
 
@@ -85,8 +85,8 @@ const projectSchema = new Schema(
           // value is the date being set
           return value <= new Date();
         },
-        message: 'Start date cannot be in the future.'
-      }
+        message: 'Start date cannot be in the future.',
+      },
     },
     // URL of the live project
     liveUrl: {
@@ -101,6 +101,7 @@ const projectSchema = new Schema(
     gitUrl: {
       type: String,
       trim: true,
+      required: false,
       validate: {
         validator: isValidUrl,
         message: (props) => `${props.value} is not a valid URL.`,

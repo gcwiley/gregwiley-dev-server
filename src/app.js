@@ -3,6 +3,7 @@ import process from 'process';
 import { fileURLToPath } from 'url';
 import chalk from 'chalk';
 import admin from 'firebase-admin';
+import multer from 'multer';
 
 // get the current file name
 const __filename = fileURLToPath(import.meta.url);
@@ -18,6 +19,17 @@ import { serviceAccount } from '../credentials/service-account.js';
 // initialize the firebase SDK
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
+});
+
+// initialize firebase storage
+const bucket = admin.storage().bucket(); // get the default storage bucket
+
+// configure multer for file uploads
+const upload = multer({
+  storage: multer.memoryStorage(), // store files in memory
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB lumit
+  },
 });
 
 // import the routers
@@ -42,7 +54,13 @@ app.use(express.urlencoded({ extended: true }));
 // create a logger middleware
 app.use(logger('dev'));
 
-// register the routers - router setup
+// make the firebase storage bucket and upload middleware available to request handlers
+app.use((req, res, next) => {
+  req.bucket = bucket; // attach the firebase storage bucket
+  next();
+});
+
+// register the routers
 app.use(projectRouter);
 
 // handle all other routes with angular app - returns angular app - catch all route
@@ -70,3 +88,6 @@ const startServer = async () => {
 
 // start the server
 startServer();
+
+// export upload middleware for use in routes
+export { upload };
