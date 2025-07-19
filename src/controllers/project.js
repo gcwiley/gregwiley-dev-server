@@ -33,7 +33,7 @@ export const newProject = async (req, res) => {
     liveUrl,
     gitUrl,
     description,
-    favorite: favorite || false,
+    favorite: favorite || false, // default to false
   });
   try {
     // saves new project to the database
