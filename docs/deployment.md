@@ -8,3 +8,10 @@
 
 4. Browse to webapp to check everything. 
 
+
+
+Steps to deploy to Google Cloud App Engine. 
+
+1. Run `ng lint` to make sure app passes linting.
+
+2. 

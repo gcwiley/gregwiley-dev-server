@@ -12,7 +12,7 @@ dotenv.config({
 });
 
 // get the connection string and the database name from the environment variables.
-const uri = process.env.MONGO_CONNECTION_STRING;
+const uri = process.env.GOOGLE_CLOUD_FIRESTORE;
 const dbName = process.env.DATABASE_NAME;
 
 // validate environment variables - ensures required variables are define
