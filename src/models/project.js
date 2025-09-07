@@ -49,11 +49,6 @@ const projectSchema = new Schema(
     category: {
       type: String,
       required: [true, 'Category is required.'],
-      enum: {
-        values: projectEnums.category,
-        message: `Category must be one of: ${projectEnums.category.join(', ')}`,
-      },
-      default: 'web', // default value
       lowercase: true,
       index: true,
     },
@@ -65,7 +60,7 @@ const projectSchema = new Schema(
       index: true,
     },
     // programming language
-    language: {
+    programmingLanguage: {
       type: String,
       required: [true, 'Project Language is required.'],
       enum: {
@@ -86,15 +81,6 @@ const projectSchema = new Schema(
           return value <= new Date();
         },
         message: 'Start date cannot be in the future.',
-      },
-    },
-    // URL of the live project
-    liveUrl: {
-      type: String,
-      trim: true,
-      validate: {
-        validator: isValidUrl,
-        message: (props) => `${props.value} is not a valid URL.`,
       },
     },
     // URL of the Git repository

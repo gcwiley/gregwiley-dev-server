@@ -34,7 +34,7 @@ async function connect() {
       console.log(
          chalk.blue(
             '\n',
-            `Successfully connected to the NOSQL database - ${dbName} on Azuse COSMOS`,
+            `Successfully connected to the NOSQL database - ${dbName} on Google Cloud`,
             '\n'
          )
       );

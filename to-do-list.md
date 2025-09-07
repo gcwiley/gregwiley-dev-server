@@ -1,1 +1,0 @@
-- set up my gregwiley.dev domain to work with web app. 
