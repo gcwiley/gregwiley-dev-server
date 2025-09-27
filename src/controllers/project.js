@@ -2,10 +2,11 @@ import { Project } from '../models/project.js';
 
 // function to create a new project - NEW PROJECT
 export const newProject = async (req, res) => {
+  console.log('PROJECT DATE', req.body);
   const project = new Project({
     title: req.body.title,
     status: req.body.status,
-    category: req.body.status,
+    category: req.body.category,
     programmingLanguage: req.body.programmingLanguage,
     startDate: new Date(req.body.startDate),
     gitUrl: req.body.gitUrl,
@@ -122,11 +123,9 @@ export const getPaginatedProjects = async (req, res) => {
 
 // function to fetch individual project by ID - GET PROJECT BY ID
 export const getProjectById = async (req, res) => {
-  //  find id of project from params
   const _id = req.params.id;
 
   try {
-    // filters by _id
     const project = await Project.findById(_id);
 
     // if project is not found, handle the empty result
@@ -143,6 +142,7 @@ export const getProjectById = async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'Project retrieved successfully.',
+      // returns project object inside of a data property
       data: project,
     });
   } catch (error) {
