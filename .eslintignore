@@ -1,2 +1,33 @@
-# Angular distibution folder
+# Angular distribution folder
 /src/dist/
+
+# Node modules and caches
+node_modules/
+.cache/
+.vite/
+.parcel-cache/
+.turbo/
+
+# Build / output
+dist/
+build/
+out/
+.public/build/
+.storybook-static/
+coverage/
+
+# OS / editor
+.DS_Store
+*.log
+.vscode/
+.idea/
+
+# Env / secrets
+.env
+.env.local
+.env.*.local
+
+# Generated/minified files
+*.min.js
+*.bundle.js
+*.map

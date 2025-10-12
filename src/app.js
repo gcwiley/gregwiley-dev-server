@@ -54,10 +54,18 @@ app.use((req, res, next) => {
 // register the routers
 app.use(projectRouter);
 
-// handle all other routes with angular app - returns angular app - catch all route
+// catch-all: return angular app for client-side routes
 app.get('*', (req, res) => {
-  // send back the angular index.html file
-  res.sendFile(path.join(__dirname, './dist/gregwiley-dev-client/browser', 'index.html'));
+  res.sendFile(path.resolve(__dirname, '../dist/gregwiley-dev-client/browser/index.html'));
+});
+
+// centralized error handler
+app.use((err, req, res) => {
+  console.error('Unhandled error:', err);
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || 'Internal Server Error',
+  });
 });
 
 // function to start the server

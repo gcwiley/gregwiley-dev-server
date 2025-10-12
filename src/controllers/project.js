@@ -2,7 +2,6 @@ import { Project } from '../models/project.js';
 
 // function to create a new project - NEW PROJECT
 export const newProject = async (req, res) => {
-  console.log('PROJECT DATE', req.body);
   const project = new Project({
     title: req.body.title,
     status: req.body.status,

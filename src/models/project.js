@@ -42,8 +42,8 @@ const projectSchema = new Schema(
         values: projectEnums.status,
         message: `Status must be one of: ${projectEnums.status.join(', ')}`,
       },
-      default: 'active', // default value
-      index: true, // improves query performance
+      default: 'not-started', // default value
+      index: true,
     },
     // project category
     category: {

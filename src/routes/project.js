@@ -1,6 +1,5 @@
-import express from 'express';
-
-const router = new express.Router();
+import { Router } from 'express';
+const router = Router();
 
 // project controller functions
 import {
