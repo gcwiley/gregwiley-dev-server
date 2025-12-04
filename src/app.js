@@ -36,7 +36,9 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // allow static access to the angular client-side folder
-app.use(express.static(path.join(__dirname, '/dist/gregwiley-dev-client/browser')));
+app.use(
+  express.static(path.join(__dirname, '/dist/gregwiley-dev-client/browser'))
+);
 
 // automatically parse incoming JSON to an object so we can access it in our request handlers
 app.use(express.json());
@@ -45,18 +47,24 @@ app.use(express.urlencoded({ extended: true }));
 // create a logger middleware
 app.use(logger('dev'));
 
-// make the firebase storage bucket and upload middleware available to request handlers
+// make the firebase storage bucket available to request handlers
 app.use((req, res, next) => {
-  req.bucket = bucket; // attach the firebase storage bucket
+  req.bucket = bucket;
   next();
 });
 
-// register the routers
-app.use(projectRouter);
+// --- ROUTES ---
+
+// register API routers with a base path
+app.use('/api/projects', projectRouter);
+
+// --- STATIC FILES ---
 
 // catch-all: return angular app for client-side routes
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../dist/gregwiley-dev-client/browser/index.html'));
+  res.sendFile(
+    path.resolve(__dirname, '../dist/gregwiley-dev-client/browser/index.html')
+  );
 });
 
 // centralized error handler
@@ -68,22 +76,22 @@ app.use((err, req, res) => {
   });
 });
 
-// function to start the server
+// --- SERVER STARTUP ---
+
 const startServer = async () => {
   try {
-    // connect to the mongo database and wait for it
     await connect();
-    console.log(chalk.blue('Successfully connected to MongoDB.'));
 
     // listen for connections only after DB connection is successful
     app.listen(port, () => {
-      console.log(chalk.green(`Successfully started server running on port ${port}`));
+      console.log(
+        chalk.green(`Successfully started server running on port ${port}`)
+      );
     });
   } catch (error) {
     console.error(chalk.red('Failed to connect to MongoDB:', error));
-    process.exit(1); // exit if DB connection fails on startup
+    process.exit(1);
   }
 };
 
-// start the server
 startServer();

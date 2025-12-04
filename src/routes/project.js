@@ -13,28 +13,29 @@ import {
   getFavoriteProjects,
 } from '../controllers/project.js';
 
-// route handler to create a new Project - POST NEW PROJECT
-router.post('/api/projects', newProject);
+// GET /api/projects/count - count all projects
+router.get('/count', getProjectCount);
 
-// route handler for fetching all projects - GET PROJECTS
-router.get('/api/projects', getProjects);
+// GET /api/projects/recent - get recent projects
+router.get('/recent', getRecentlyCreatedProjects);
 
-// route handler to count all projects in database - COUNT ALL PROJECTS
-router.get('/api/projects/count', getProjectCount);
+// GET /api/projects/favorites - get favorite projects
+router.get('/favorites', getFavoriteProjects);
 
-// route handler to get the last 5 project created - GET 5 RECENT PROJECTS
-router.get('/api/projects/recent', getRecentlyCreatedProjects);
+// GET /api/projects/:id - get project by ID
+// (must come after specific routes like 'count' or 'recent')
+router.get('/:id', getProjectById);
 
-// route handler to get the favorite projects
-router.get('/api/projects/favorites', getFavoriteProjects);
+// POST /api/projects - create new project
+router.post('/', newProject);
 
-// route handler to fetch individual project - GET PROJECT BY ID
-router.get('/api/projects/:id', getProjectById);
+// GET /api/projects - get all projects
+router.get('/', getProjects);
 
-// route handler to update an existing project - UPDATE PROJECT BY ID
-router.patch('/api/projects/:id', updateProjectById);
+// PATCH /api/projects/:id - update project
+router.patch('/:id', updateProjectById);
 
-// route handler to delete a project by ID - DELETE PROJECT BY ID
-router.delete('/api/projects/:id', deleteProjectById);
+// DELETE /api/projects/:id - delete project
+router.delete('/:id', deleteProjectById);
 
 export { router as projectRouter };

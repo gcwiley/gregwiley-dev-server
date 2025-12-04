@@ -17,7 +17,7 @@ const dbName = process.env.DATABASE_NAME;
 
 // validate environment variables - ensures required variables are define
 if (!uri) {
-   throw new Error('MONGO_CONNECTION_STRING is not defined in the enviroment variables');
+   throw new Error('MONGO_CONNECTION_STRING is not defined in the environment variables');
 }
 
 if (!dbName) {
