@@ -1,5 +1,4 @@
 import path from 'node:path';
-import process from 'process';
 import { BlobServiceClient, StorageSharedKeyCredential, newPipeline } from '@azure/storage-blob';
 import * as dotenv from 'dotenv';
 

@@ -10,7 +10,7 @@ import {
   deleteProjectById,
   getProjectCount,
   getRecentlyCreatedProjects,
-  getFavoriteProjects,
+  searchProjects,
 } from '../controllers/project.js';
 
 // GET /api/projects/count - count all projects
@@ -19,8 +19,11 @@ router.get('/count', getProjectCount);
 // GET /api/projects/recent - get recent projects
 router.get('/recent', getRecentlyCreatedProjects);
 
-// GET /api/projects/favorites - get favorite projects
-router.get('/favorites', getFavoriteProjects);
+// GET /api/projects/search - search projects
+router.get('/search', searchProjects);
+
+// GET /api/projects - get all projects
+router.get('/', getProjects);
 
 // GET /api/projects/:id - get project by ID
 // (must come after specific routes like 'count' or 'recent')
@@ -28,9 +31,6 @@ router.get('/:id', getProjectById);
 
 // POST /api/projects - create new project
 router.post('/', newProject);
-
-// GET /api/projects - get all projects
-router.get('/', getProjects);
 
 // PATCH /api/projects/:id - update project
 router.patch('/:id', updateProjectById);

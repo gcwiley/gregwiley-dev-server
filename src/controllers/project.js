@@ -10,18 +10,16 @@ export const newProject = async (req, res) => {
     startDate: new Date(req.body.startDate),
     gitUrl: req.body.gitUrl,
     description: req.body.description,
-    favorite: req.body.favorite || false, // default to false
+    favorite: req.body.favoriteProject || false, // default to false
   });
   try {
     // saves new project to the database
     await project.save();
-    res
-      .status(201)
-      .json({
-        success: true,
-        message: 'Successfully added project to database.',
-        data: project,
-      });
+    res.status(201).json({
+      success: true,
+      message: 'Successfully added project to database.',
+      data: project,
+    });
   } catch (error) {
     console.error('Error creating project.', error);
     res.status(500).json({
@@ -40,7 +38,7 @@ export const getProjects = async (req, res) => {
     // if no projects are found
     if (projects.length === 0) {
       return res
-        .status(404)
+        .status(200)
         .json({ success: false, message: 'No projects found.' });
     }
     // send the list of projects back to the client
@@ -76,7 +74,7 @@ export const getPaginatedProjects = async (req, res) => {
     const limit = size;
     const skip = (page - 1) * size;
 
-    const projects = await Project.find({}).skip(skip).limit(limit);
+    const projects = await Project.find({}).skip(skip).limit(limit).lean();
     const totalProjects = await Project.countDocuments({});
 
     if (projects.length === 0 && totalProjects > 0) {
@@ -125,16 +123,14 @@ export const getProjectById = async (req, res) => {
   const _id = req.params.id;
 
   try {
-    const project = await Project.findById(_id);
+    const project = await Project.findById(_id).lean();
 
     // if project is not found, handle the empty result
     if (!project) {
-      return res
-        .status(404)
-        .json({
-          success: false,
-          message: 'No project with that ID was found.',
-        });
+      return res.status(404).json({
+        success: false,
+        message: 'No project with that ID was found.',
+      });
     }
 
     // send project data to client
@@ -180,12 +176,10 @@ export const updateProjectById = async (req, res) => {
 
     // is project is not found
     if (!project) {
-      return res
-        .status(404)
-        .json({
-          success: false,
-          message: 'No project with that ID was found.',
-        });
+      return res.status(404).json({
+        success: false,
+        message: 'No project with that ID was found.',
+      });
     }
 
     // send updated project back to client
@@ -215,12 +209,10 @@ export const deleteProjectById = async (req, res) => {
 
     // if project is not found
     if (!project) {
-      return res
-        .status(404)
-        .json({
-          success: false,
-          message: 'No project with that ID was found.',
-        });
+      return res.status(404).json({
+        success: false,
+        message: 'No project with that ID was found.',
+      });
     }
     res
       .status(200)
@@ -285,7 +277,9 @@ export const getRecentlyCreatedProjects = async (req, res) => {
 // function to get favorite projects - GET FAVORITE PROJECTS
 export const getFavoriteProjects = async (req, res) => {
   try {
-    const favoriteProjects = await Project.find({ favorite: true });
+    const favoriteProjects = await Project.find({
+      favoriteProject: true,
+    }).lean();
 
     // if favorite projects are not found
     if (!favoriteProjects) {
@@ -293,13 +287,11 @@ export const getFavoriteProjects = async (req, res) => {
         .status(404)
         .json({ success: false, message: 'No favorite projects found.' });
     }
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: 'Favorite projects',
-        data: favoriteProjects,
-      });
+    res.status(200).json({
+      success: true,
+      message: 'Favorite projects',
+      data: favoriteProjects,
+    });
   } catch (error) {
     console.error('Error fetching favorite projects:', error);
     res.status(500).json({
@@ -328,15 +320,13 @@ export const searchProjects = async (req, res) => {
     // search for projects that match the query in the title or description
     const projects = await Project.find({
       $or: [{ title: { $regex: regex } }, { description: { $regex: regex } }],
-    });
+    }).lean();
 
     if (projects.length === 0) {
-      return res
-        .status(404)
-        .json({
-          success: false,
-          message: 'No projects found matching your search query.',
-        });
+      return res.status(200).json({
+        success: false,
+        message: 'No projects found matching your search query.',
+      });
     }
 
     res.status(200).json({
@@ -367,7 +357,7 @@ export const getProjectsByCategory = async (req, res) => {
     }
 
     // find projects that match the specified category
-    const projects = await Project.find({ category: category });
+    const projects = await Project.find({ category: category }).lean();
 
     if (projects.length === 0) {
       return res.status(404).json({

@@ -14,5 +14,6 @@
     "source.organizeImports": "explicit"
   },
   // set the font size
-  "editor.fontSize": 16
+  "editor.fontSize": 16,
+  "window.zoomLevel": 2
 }

@@ -1,92 +1,68 @@
 import path from 'path';
-import process from 'process';
 import { fileURLToPath } from 'url';
 import chalk from 'chalk';
 import admin from 'firebase-admin';
 import express from 'express';
 import logger from 'morgan';
 
-// get the current file name
 const __filename = fileURLToPath(import.meta.url);
-// get the directory name of the current file
 const __dirname = path.dirname(__filename);
 
-// import the credentials
 import { serviceAccount } from '../credentials/service-account.js';
 
-// initialize the firebase SDK
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   storageBucket: `${serviceAccount.project_id}.appspot.com`,
 });
 
-// initialize firebase storage
-const bucket = admin.storage().bucket(); // get the default storage bucket
-
-// import the routers
+const bucket = admin.storage().bucket();
 import { projectRouter } from './routes/project.js';
-
-// initialize the database connection function
 import { connect } from './db/connect.js';
 
-// create an express application
 const app = express();
 
-// set up port
 const port = process.env.PORT || 3000;
 
 // allow static access to the angular client-side folder
-app.use(
-  express.static(path.join(__dirname, '/dist/gregwiley-dev-client/browser'))
-);
+const clientDistPath = path.join(__dirname, './dist/gregwiley-dev-client/browser');
+app.use(express.static(clientDistPath));
 
-// automatically parse incoming JSON to an object so we can access it in our request handlers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// create a logger middleware
 app.use(logger('dev'));
 
-// make the firebase storage bucket available to request handlers
 app.use((req, res, next) => {
   req.bucket = bucket;
   next();
 });
 
 // --- ROUTES ---
-
-// register API routers with a base path
 app.use('/api/projects', projectRouter);
 
 // --- STATIC FILES ---
-
-// catch-all: return angular app for client-side routes
 app.get('*', (req, res) => {
-  res.sendFile(
-    path.resolve(__dirname, '../dist/gregwiley-dev-client/browser/index.html')
-  );
+  res.sendFile(path.resolve(clientDistPath, 'index.html'));
 });
 
-// centralized error handler
-app.use((err, req, res) => {
-  console.error('Unhandled error:', err);
-  res.status(err.status || 500).json({
-    success: false,
-    message: err.message || 'Internal Server Error',
-  });
+// global error handler - express requires 4 args for error handlers
+app.use((error, req, res, next) => {
+  console.error(chalk.red('Server Error:', error.stack));
+  // ensure we don't try to send a response if one was already sent
+  if (res.headersSent) {
+    return next(error);
+  }
+  res
+    .status(500)
+    .json({ error: 'Internal Server Error', message: error.message });
 });
 
 // --- SERVER STARTUP ---
-
 const startServer = async () => {
   try {
     await connect();
 
-    // listen for connections only after DB connection is successful
     app.listen(port, () => {
-      console.log(
-        chalk.green(`Successfully started server running on port ${port}`)
-      );
+      console.log(chalk.green(`Successfully started server running on port ${port}`));
     });
   } catch (error) {
     console.error(chalk.red('Failed to connect to MongoDB:', error));

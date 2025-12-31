@@ -1,7 +1,7 @@
 {
   "env": {
-    "browser": true,
-    "es2021": true
+    "es2021": true,
+    "node": true
   },
   "extends": "eslint:recommended",
   "parserOptions": {
@@ -9,8 +9,8 @@
     "sourceType": "module"
   },
   "rules": {
-    "semi": ["error", "always"], // requires semicolons
-    "quotes": ["error", "single"], // reguires single quotes
-    "arrow-parens": ["error", "always"] // requires parens around arrow functions
+    "semi": ["error", "always"],
+    "quotes": ["error", "single"],
+    "arrow-parens": ["error", "always"]
   }
 }
