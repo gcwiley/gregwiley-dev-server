@@ -101,7 +101,7 @@ const projectSchema = new Schema(
       maxlength: [1000, 'Description cannot exceed 1000 characters.'],
     },
     // indicates if the project is a favorite
-    favorite: {
+    isFavorite: {
       type: Boolean,
       default: false,
       index: true,
