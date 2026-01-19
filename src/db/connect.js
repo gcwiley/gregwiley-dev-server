@@ -60,4 +60,15 @@ async function connect() {
   }
 }
 
-export { connect };
+// -- disconnect function ---
+async function disconnect() {
+  try {
+    await mongoose.connection.close();
+    console.log(chalk.blue('Mongoose connection closed.'));
+  } catch (error) {
+    console.error(chalk.red('Error closing Mongoose connection:', error));
+    throw error;
+  }
+}
+
+export { connect, disconnect };
