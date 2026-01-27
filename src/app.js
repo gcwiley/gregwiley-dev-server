@@ -6,6 +6,7 @@ import express from 'express';
 import logger from 'morgan';
 import helmet from 'helmet';
 import cors from 'cors';
+import rateLimit from 'express-rate-limit';
 
 import { connect, disconnect } from './db/connect.js';
 import { projectRouter } from './routes/project.js';
@@ -52,6 +53,12 @@ app.use((req, res, next) => {
   req.bucket = bucket;
   next();
 });
+
+// --- API RATE LIMITING ---
+const apiLimiter = rateLimit({
+  
+})
+
 
 // --- ROUTES ---
 app.use('/api/projects', projectRouter);

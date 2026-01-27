@@ -7,13 +7,6 @@
   "workbench.preferredDarkColorTheme": "Default Dark Modern",
   // set prettier as the default formatter for all languages
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  // enable format on save
-  "editor.formatOnSave": true,
-  // automatically organize imports on save (removes unused, sorts, them)
-  "editor.codeActionsOnSave": {
-    "source.organizeImports": "explicit"
-  },
   // set the font size
   "editor.fontSize": 16,
-  "window.zoomLevel": 2
 }

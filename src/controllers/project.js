@@ -1,18 +1,29 @@
 import { Project } from '../models/project.js';
 
-// function to create a new project - NEW PROJECT
+// NEW PROJECT
 export const newProject = async (req, res) => {
-  const project = new Project({
-    title: req.body.title,
-    status: req.body.status,
-    category: req.body.category,
-    programmingLanguage: req.body.programmingLanguage,
-    startDate: new Date(req.body.startDate),
-    gitUrl: req.body.gitUrl,
-    description: req.body.description,
-    favorite: req.body.favoriteProject || false, // default to false
-  });
   try {
+    const {
+      title,
+      status,
+      category,
+      programmingLanguage,
+      startDate,
+      gitUrl,
+      description,
+      favorite,
+    } = req.body;
+
+    const project = new Project({
+      title,
+      status,
+      category,
+      programmingLanguage,
+      startDate: new Date(startDate),
+      gitUrl,
+      description,
+      favorite: favorite || false, // set default if not provided
+    });
     // saves new project to the database
     await project.save();
     res.status(201).json({
@@ -30,7 +41,7 @@ export const newProject = async (req, res) => {
   }
 };
 
-// function to fetch all projects from database - GET ALL PROJECTS
+// GET ALL PROJECTS
 export const getProjects = async (req, res) => {
   try {
     const projects = await Project.find({}).lean();
@@ -41,7 +52,6 @@ export const getProjects = async (req, res) => {
         .status(200)
         .json({ success: false, message: 'No projects found.' });
     }
-    // send the list of projects back to the client
     res.status(200).json({
       success: true,
       message: 'Successfully retrieved projects.',
@@ -57,7 +67,7 @@ export const getProjects = async (req, res) => {
   }
 };
 
-// function to fetch all paginated projects from database - GET PROJECT PAGINATION
+// GET PROJECT PAGINATION
 export const getPaginatedProjects = async (req, res) => {
   try {
     // extract and validate pagination parameters from query string (with default values)
@@ -118,7 +128,7 @@ export const getPaginatedProjects = async (req, res) => {
   }
 };
 
-// function to fetch individual project by ID - GET PROJECT BY ID
+// GET PROJECT BY ID
 export const getProjectById = async (req, res) => {
   const _id = req.params.id;
 
@@ -150,7 +160,7 @@ export const getProjectById = async (req, res) => {
   }
 };
 
-// function to update a project by id - UPDATE PROJECT BY ID
+// UPDATE PROJECT BY ID
 export const updateProjectById = async (req, res) => {
   //  find id of project from params
   const _id = req.params.id;
@@ -171,7 +181,7 @@ export const updateProjectById = async (req, res) => {
       {
         new: true,
         runValidators: true,
-      }
+      },
     );
 
     // is project is not found
@@ -198,7 +208,7 @@ export const updateProjectById = async (req, res) => {
   }
 };
 
-// function to delete a project by ID - DELETE PROJECT BY ID
+// DELETE PROJECT BY ID
 export const deleteProjectById = async (req, res) => {
   //  find id of project from params
   const _id = req.params.id;
@@ -227,12 +237,11 @@ export const deleteProjectById = async (req, res) => {
   }
 };
 
-// function to count all projects in database - GET PROJECT COUNT
+// GET PROJECT COUNT
 export const getProjectCount = async (req, res) => {
   try {
     const projectCount = await Project.countDocuments({});
 
-    // send project count to client
     res
       .status(200)
       .json({ success: true, message: 'Project count', data: projectCount });
@@ -246,7 +255,7 @@ export const getProjectCount = async (req, res) => {
   }
 };
 
-// function to get the 5 most recently created projects - GET 5 RECENT PROJECTS
+// GET 5 RECENT PROJECTS
 export const getRecentlyCreatedProjects = async (req, res) => {
   try {
     const mostRecentProjects = await Project.find({})
@@ -274,7 +283,7 @@ export const getRecentlyCreatedProjects = async (req, res) => {
   }
 };
 
-// function to get favorite projects - GET FAVORITE PROJECTS
+// GET FAVORITE PROJECTS
 export const getFavoriteProjects = async (req, res) => {
   try {
     const favoriteProjects = await Project.find({
@@ -302,7 +311,7 @@ export const getFavoriteProjects = async (req, res) => {
   }
 };
 
-// function to search project based on a query - SEARCH PROJECTS
+// SEARCH PROJECTS
 export const searchProjects = async (req, res) => {
   const { query } = req.query;
 
@@ -344,7 +353,7 @@ export const searchProjects = async (req, res) => {
   }
 };
 
-// function to filter projects by category - GET PROJECTS BY CATEGORY
+// GET PROJECTS BY CATEGORY
 export const getProjectsByCategory = async (req, res) => {
   try {
     const { category } = req.query;
