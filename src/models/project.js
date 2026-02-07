@@ -22,7 +22,7 @@ const isValidUrl = (url) => {
   }
 };
 
-// create the project schema
+// create project schema
 const projectSchema = new Schema(
   {
     // project title
@@ -115,7 +115,7 @@ const projectSchema = new Schema(
 // index the createdAt field for sorting
 projectSchema.index({ createdAt: -1 }); // -1 indicates descending order is common for this sort
 
-// create the project model
+// create project model
 const Project = mongoose.model('Project', projectSchema);
 
 export { Project };

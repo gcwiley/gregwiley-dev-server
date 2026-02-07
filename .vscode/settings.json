@@ -10,5 +10,12 @@
   // set the font size
   "editor.fontSize": 16,
   // sets the icon theme to material icon theme
-  "workbench.iconTheme": "material-icon-theme"
+  "workbench.iconTheme": "material-icon-theme",
+  // list of words consided spelled correctly
+  "cSpell.words": [
+    "appspot",
+    "gcloudignore",
+    "gregwiley",
+    "maxlength"
+  ]
 }

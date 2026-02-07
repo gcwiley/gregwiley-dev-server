@@ -1,7 +1,7 @@
 {
   "name": "wiley-dev-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "source code for my website",
   "main": "app.js",
   "scripts": {
     "start": "node src/app.js",
