@@ -7,3 +7,7 @@ automatic_scaling:
   min_idle_instances: 0
 
 runtime: nodejs22
+
+env_variables:
+  CORS_ORIGIN: "https://gregwiley.dev"
+  GCP_PROJECT_ID: "gregwiley-dev"

@@ -10,7 +10,6 @@ import rateLimit from 'express-rate-limit';
 
 import { connect, disconnect } from './db/connect.js';
 import { projectRouter } from './routes/project.js';
-import { serviceAccount } from '../credentials/service-account.js';
 
 // --- CONFIGURATION ---
 const __filename = fileURLToPath(import.meta.url);
@@ -24,19 +23,29 @@ const angularDistPath = path.join(
 
 // --- FIREBASE INIT ---
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  storageBucket: `${serviceAccount.project_id}.appspot.com`,
+  credential: admin.credential.applicationDefault(),
+  storageBucket: `${process.env.GCP_PROJECT_ID}.appspot.com`,
 });
 const bucket = admin.storage().bucket();
 
 // --- EXPRESS SETUP ---
 const app = express();
+app.set('trust proxy', 1);
 
+// --- HELMET ---
 app.use(
   helmet({
-    contentSecurityPolicy: false,
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", 'data:', 'https://storage.googleapis.com'],
+      },
+    },
   }),
 );
+
 app.use(
   cors({
     origin: CORS_ORIGIN,
@@ -82,13 +91,13 @@ app.get('*', (req, res) => {
 // global error handler - express requires 4 args for error handlers
 app.use((error, req, res, next) => {
   console.error(chalk.red('Server Error:', error.stack));
-  // ensure we don't try to send a response if one was already sent
   if (res.headersSent) {
     return next(error);
   }
-  res
-    .status(500)
-    .json({ error: 'Internal Server Error', message: error.message });
+  const status = error.status || 500;
+  res.status(status).json({
+    error: status === 500 ? 'Internal Server Error' : error.message,
+  });
 });
 
 // --- STARTUP SEQUENCE ---
