@@ -10,6 +10,8 @@ import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 
 import { connect, disconnect } from './db/connect.js';
+
+// IMPORT ROUTERS ---
 import { projectRouter } from './routes/project.routes.js';
 
 // --- CONFIGURATION ---
@@ -22,7 +24,12 @@ const angularDistPath = path.join(
   './dist/gregwiley-dev-client/browser',
 );
 
-const serviceAccount = JSON.parse(readFileSync(path.join(__dirname, '../credentials/service-account.json'), 'utf8'))
+const serviceAccount = JSON.parse(
+  readFileSync(
+    path.join(__dirname, '../credentials/service-account.json'),
+    'utf8',
+  ),
+);
 
 // --- FIREBASE INIT ---
 admin.initializeApp({
