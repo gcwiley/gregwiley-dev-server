@@ -11,7 +11,7 @@ import {
   getProjectCount,
   getRecentlyCreatedProjects,
   searchProjects,
-} from '../controllers/project.js';
+} from '../controllers/project.controller.js';
 
 // GET /api/projects/count - count all projects
 router.get('/count', getProjectCount);

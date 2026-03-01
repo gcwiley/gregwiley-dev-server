@@ -1,4 +1,5 @@
 import path from 'path';
+import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import chalk from 'chalk';
 import admin from 'firebase-admin';
@@ -9,7 +10,7 @@ import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 
 import { connect, disconnect } from './db/connect.js';
-import { projectRouter } from './routes/project.js';
+import { projectRouter } from './routes/project.routes.js';
 
 // --- CONFIGURATION ---
 const __filename = fileURLToPath(import.meta.url);
@@ -21,28 +22,24 @@ const angularDistPath = path.join(
   './dist/gregwiley-dev-client/browser',
 );
 
+const serviceAccount = JSON.parse(readFileSync(path.join(__dirname, '../credentials/service-account.json'), 'utf8'))
+
 // --- FIREBASE INIT ---
 admin.initializeApp({
-  credential: admin.credential.applicationDefault(),
-  storageBucket: `${process.env.GCP_PROJECT_ID}.appspot.com`,
+  credential: admin.credential.cert(serviceAccount),
+  storageBucket: `${serviceAccount.project_id}.appspot.com`,
 });
+
 const bucket = admin.storage().bucket();
 
 // --- EXPRESS SETUP ---
 const app = express();
 app.set('trust proxy', 1);
 
-// --- HELMET ---
+// --- HELMET SETUP ---
 app.use(
   helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: ["'self'"],
-        styleSrc: ["'self'", "'unsafe-inline'"],
-        imgSrc: ["'self'", 'data:', 'https://storage.googleapis.com'],
-      },
-    },
+    contentSecurityPolicy: false,
   }),
 );
 
