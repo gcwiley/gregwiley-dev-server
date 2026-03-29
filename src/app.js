@@ -9,9 +9,16 @@ import helmet from 'helmet';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 
+// --- LOAD SECRETS ---
+import { loadSecrets } from './secrets.js';
+
+// Load secrets before anything else
+await loadSecrets();
+
+// --- IMPORT DATABASE ---
 import { connect, disconnect } from './db/connect.js';
 
-// IMPORT ROUTERS ---
+// --- IMPORT ROUTER ---
 import { projectRouter } from './routes/project.routes.js';
 
 // --- CONFIGURATION ---
@@ -24,12 +31,19 @@ const angularDistPath = path.join(
   './dist/gregwiley-dev-client/browser',
 );
 
-const serviceAccount = JSON.parse(
-  readFileSync(
-    path.join(__dirname, '../credentials/service-account.json'),
-    'utf8',
-  ),
-);
+// --- FIREBASE CREDENTIALS ---
+let serviceAccount;
+try {
+  serviceAccount = JSON.parse(
+    readFileSync(
+      path.join(__dirname, '../credentials/service-account.json'),
+      'utf-8',
+    ),
+  );
+} catch (error) {
+  console.error(chalk.red('Error reading service account file:'), error);
+  process.exit(1);
+}
 
 // --- FIREBASE INIT ---
 admin.initializeApp({
@@ -39,31 +53,45 @@ admin.initializeApp({
 
 const bucket = admin.storage().bucket();
 
-// --- EXPRESS SETUP ---
+// --- EXPRESS ---
 const app = express();
 app.set('trust proxy', 1);
 
-// --- HELMET SETUP ---
+// --- HELMET ---
 app.use(
   helmet({
-    contentSecurityPolicy: false,
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'"], // tighten ass needed
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", 'https://storage.googleapis.com'],
+      },
+    },
   }),
 );
 
+// --- CORS ---
 app.use(
   cors({
     origin: CORS_ORIGIN,
     credentials: true,
   }),
 );
+
+// --- MORGAN LOGGER ---
 app.use(logger('dev'));
+
+// --- BODY PARSERS ---
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// --- STATIC FILES ---
 app.use(express.static(angularDistPath));
 
 // attach bucket to request
-app.use((req, res, next) => {
-  req.bucket = bucket;
+app.use((_req, res, next) => {
+  res.bucket = bucket;
   next();
 });
 

@@ -20,11 +20,10 @@ export const authenticate = async (req, res, next) => {
 
   try {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
-    req.user = decodedToken; // attach the decoded user information to the request object
+    req.user = decodedToken;
     next();
   } catch (error) {
     console.error('Error verifying Firebase ID token:', error);
-    // return 401 for authentication failures
-    res.status(401).json({ message: 'Invalid or expired token.' });
+    return res.status(401).json({ message: 'Invalid or expired token.' });
   }
 };

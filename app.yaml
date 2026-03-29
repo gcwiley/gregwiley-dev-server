@@ -1,10 +1,12 @@
-# optimize instance class (F1 is cheapest/default, F2/F4 are faster)
+runtime: nodejs24
+
 instance_class: F1
 
-# automatic scaling setting to control costs
 automatic_scaling:
+  min_instances: 0
   max_instances: 5
-  min_instances: 1
-  min_idle_instances: 0
+  target_cpu_utilization: 0.80
+  max_concurrent_requests: 10
 
-runtime: nodejs22
+env_variables:
+  NODE_ENV: 'production'

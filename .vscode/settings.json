@@ -1,4 +1,6 @@
 {
+  // turns inline suggestions off
+  "editor.inlineSuggest.enabled": false,
   // turns compact folders off in explorer
   "explorer.compactFolders": false,
   // turns the minimap off
