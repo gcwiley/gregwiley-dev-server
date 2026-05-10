@@ -25,10 +25,7 @@ const upload = multer({
   },
 });
 
-/**
- * Validates the actual file content by inspecting magic bytes.
- * Call this after multer has processed the upload.
- */
+// validates the actual file content by inspecting magic bytes.
 async function validateFileContent(req, _res, next) {
   if (!req.file) {
     return next();
@@ -51,10 +48,7 @@ async function validateFileContent(req, _res, next) {
   }
 }
 
-/**
- * Error-handling middleware for multer errors.
- * Mount after your upload routes.
- */
+// error-handling middleware for multer errors.
 function handleUploadError(err, _req, res, next) {
   if (err instanceof multer.MulterError) {
     const messages = {

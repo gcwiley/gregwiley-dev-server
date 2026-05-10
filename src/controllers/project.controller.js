@@ -11,7 +11,7 @@ export const newProject = async (req, res) => {
       startDate,
       gitUrl,
       description,
-      favorite,
+      isFavorite,
     } = req.body;
 
     const project = new Project({
@@ -22,7 +22,7 @@ export const newProject = async (req, res) => {
       startDate: new Date(startDate),
       gitUrl,
       description,
-      favorite: favorite || false, // set default if not provided
+      isFavorite: isFavorite || false, // set default if not provided
     });
     // saves new project to the database
     await project.save();
@@ -41,33 +41,7 @@ export const newProject = async (req, res) => {
   }
 };
 
-// GET ALL PROJECTS
-export const getProjects = async (req, res) => {
-  try {
-    const projects = await Project.find({}).lean();
-
-    // if no projects are found
-    if (projects.length === 0) {
-      return res
-        .status(200)
-        .json({ success: false, message: 'No projects found.' });
-    }
-    res.status(200).json({
-      success: true,
-      message: 'Successfully retrieved projects.',
-      data: projects,
-    });
-  } catch (error) {
-    console.error('Error fetching projects:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error fetching projects. ',
-      error: error.message,
-    });
-  }
-};
-
-// GET PROJECT PAGINATION
+// GET ALL PROJECT WITH PAGINATION
 export const getPaginatedProjects = async (req, res) => {
   try {
     // extract and validate pagination parameters from query string (with default values)
@@ -176,7 +150,7 @@ export const updateProjectById = async (req, res) => {
         startDate: new Date(req.body.startDate),
         gitUrl: req.body.gitUrl,
         description: req.body.description,
-        favoriteProject: req.body.favoriteProject,
+        isFavorite: req.body.isFavorite,
       },
       {
         new: true,
@@ -258,7 +232,7 @@ export const getProjectCount = async (req, res) => {
 // GET 5 RECENT PROJECTS
 export const getRecentlyCreatedProjects = async (req, res) => {
   try {
-    const mostRecentProjects = await Project.find({})
+    const mostRecentProjects = await Project.find({}).lean()
       .sort({ createdAt: -1 })
       .limit(5);
 
@@ -287,7 +261,7 @@ export const getRecentlyCreatedProjects = async (req, res) => {
 export const getFavoriteProjects = async (req, res) => {
   try {
     const favoriteProjects = await Project.find({
-      favoriteProject: true,
+      isFavorite: true,
     }).lean();
 
     // if favorite projects are not found

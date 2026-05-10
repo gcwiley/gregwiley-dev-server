@@ -1,7 +1,7 @@
 {
   "name": "gregwiley-dev-server",
   "version": "1.0.0",
-  "description": "source code for my website",
+  "description": "Source code for my personal website.",
   "main": "app.js",
   "scripts": {
     "start": "node src/app.js",

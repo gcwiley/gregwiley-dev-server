@@ -4,7 +4,7 @@ const router = Router();
 // project controller functions
 import {
   newProject,
-  getProjects,
+  getPaginatedProjects,
   getProjectById,
   updateProjectById,
   deleteProjectById,
@@ -12,6 +12,9 @@ import {
   getRecentlyCreatedProjects,
   searchProjects,
 } from '../controllers/project.controller.js';
+
+// import auth middleware
+import { authenticate } from '../middleware/auth.middleware.js';
 
 // GET /api/projects/count - count all projects
 router.get('/count', getProjectCount);
@@ -23,19 +26,18 @@ router.get('/recent', getRecentlyCreatedProjects);
 router.get('/search', searchProjects);
 
 // GET /api/projects - get all projects
-router.get('/', getProjects);
+router.get('/', getPaginatedProjects);
 
 // GET /api/projects/:id - get project by ID
-// (must come after specific routes like 'count' or 'recent')
 router.get('/:id', getProjectById);
 
 // POST /api/projects - create new project
-router.post('/', newProject);
+router.post('/', authenticate, newProject);
 
 // PATCH /api/projects/:id - update project
-router.patch('/:id', updateProjectById);
+router.patch('/:id', authenticate, updateProjectById);
 
 // DELETE /api/projects/:id - delete project
-router.delete('/:id', deleteProjectById);
+router.delete('/:id', authenticate, deleteProjectById);
 
 export { router as projectRouter };

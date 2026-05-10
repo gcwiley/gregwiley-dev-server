@@ -15,7 +15,7 @@ import { loadSecrets } from './secrets.js';
 // Load secrets before anything else
 await loadSecrets();
 
-// --- IMPORT DATABASE ---
+// --- IMPORT DATABASE CONNECTION ---
 import { connect, disconnect } from './db/connect.js';
 
 // --- IMPORT ROUTER ---
@@ -28,7 +28,7 @@ const PORT = process.env.PORT || 3000;
 const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:4200';
 const angularDistPath = path.join(
   __dirname,
-  './dist/gregwiley-dev-client/browser',
+  '../dist/gregwiley-dev-client/browser',
 );
 
 // --- FIREBASE CREDENTIALS ---
@@ -63,7 +63,7 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "'unsafe-inline'"], // tighten ass needed
+        scriptSrc: ["'self'", "'unsafe-inline'"],
         styleSrc: ["'self'", "'unsafe-inline'"],
         imgSrc: ["'self'", 'https://storage.googleapis.com'],
       },
@@ -90,8 +90,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(angularDistPath));
 
 // attach bucket to request
-app.use((_req, res, next) => {
-  res.bucket = bucket;
+app.use((req, res, next) => {
+  req.bucket = bucket;
   next();
 });
 

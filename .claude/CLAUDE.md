@@ -8,7 +8,7 @@ A Node.js/Express REST API backend for an album catalog application. Serves an A
 
 - **Runtime**: Node.js 24 (ESM modules — `"type": "module"` in package.json)
 - **Framework**: Express 4
-- **Database**: MongoDB (Mongoose)
+- **Database**: Fix this!
 - **Auth**: Firebase Admin SDK — verifies Firebase ID tokens (JWT Bearer tokens)
 - **File Storage**: Firebase/Google Cloud Storage (via `firebase-admin`)
 - **Deploy Target**: Google App Engine (`app.yaml`, nodejs24 runtime)
