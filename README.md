@@ -1,8 +1,8 @@
-# gregwiley.dev Web Application
+# gregwiley.dev Server
 
 ## Overview
 
-A Node.js/Express REST API backend for an album catalog application. Serves an Angular SPA from `dist/album-app-client/browser` and exposes a JSON API under `/api`.
+A Node.js/Express REST API backend for my personal code project tracker application. Serves an Angular SPA from `dist/gregwiley-dev-client/browser` and exposes a JSON API under `/api`.
 
 ## Tech Stack
 

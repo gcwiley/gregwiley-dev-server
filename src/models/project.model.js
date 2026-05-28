@@ -22,7 +22,6 @@ const isValidUrl = (url) => {
   }
 };
 
-// create project schema
 const projectSchema = new Schema(
   {
     // project title
@@ -31,8 +30,8 @@ const projectSchema = new Schema(
       required: [true, 'Title is required.'],
       trim: true,
       maxlength: [100, 'Title cannot exceed 100 characters.'],
-      index: true, // improves query performance
-      unique: true, // titles must be unique
+      index: true,
+      unique: true,
     },
     // project status
     status: {
@@ -42,7 +41,7 @@ const projectSchema = new Schema(
         values: projectEnums.status,
         message: `Status must be one of: ${projectEnums.status.join(', ')}`,
       },
-      default: 'not-started', // default value
+      default: 'not-started',
       index: true,
     },
     // project category
@@ -54,7 +53,7 @@ const projectSchema = new Schema(
     },
     // tags
     tags: {
-      type: [String], // array of strings
+      type: [String],
       required: false,
       default: [],
       index: true,
@@ -72,18 +71,17 @@ const projectSchema = new Schema(
     },
     // project start date
     startDate: {
-      type: Date, // use Date for better date handling
+      type: Date,
       required: [true, 'Start date is required.'],
-      default: Date.now, // sets the default date to now
+      default: Date.now,
       validate: {
         validator: function (value) {
-          // value is the date being set
           return value <= new Date();
         },
         message: 'Start date cannot be in the future.',
       },
     },
-    // URL of the Git repository
+    // Git Repo URL 
     gitUrl: {
       type: String,
       trim: true,
@@ -100,7 +98,7 @@ const projectSchema = new Schema(
       required: [true, 'Description is required.'],
       maxlength: [1000, 'Description cannot exceed 1000 characters.'],
     },
-    // indicates if the project is a favorite
+    // favorite
     isFavorite: {
       type: Boolean,
       default: false,
@@ -112,10 +110,8 @@ const projectSchema = new Schema(
   }
 );
 
-// index the createdAt field for sorting
-projectSchema.index({ createdAt: -1 }); // -1 indicates descending order is common for this sort
+projectSchema.index({ createdAt: -1 });
 
-// create project model
 const Project = mongoose.model('Project', projectSchema);
 
 export { Project };
