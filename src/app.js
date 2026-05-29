@@ -34,22 +34,25 @@ const PORT = process.env.PORT || 3000;
 // CORS origin - must match your Angular app's URL
 const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:4200';
 // path to the Angular build output
-const angularDistPath = path.join(__dirname, './dist/gregwiley-dev-client/browser');
+const angularDistPath = path.join(
+  __dirname,
+  './dist/gregwiley-dev-client/browser',
+);
 
 // --- FIREBASE CREDENTIALS ---
 let serviceAccountCredential;
 
 if (process.env.NODE_ENV === 'production' || process.env.GAE_ENV) {
-  serviceAccountCredential = admin.credential.applicationDefault()
+  serviceAccountCredential = admin.credential.applicationDefault();
 } else {
   // local development fallback
   const serviceAccountJson = JSON.parse(
     readFileSync(
       path.join(__dirname, '../credentials/service-account.json'),
-      'utf-8'
-    )
+      'utf-8',
+    ),
   );
-  serviceAccountCredential = admin.credential.cert(serviceAccountJson)
+  serviceAccountCredential = admin.credential.cert(serviceAccountJson);
 }
 
 // --- FIREBASE INIT ---
@@ -64,7 +67,7 @@ const app = express();
 
 // trust first proxy (GAE load balancer)
 if (process.env.NODE_ENV === 'production' || process.env.GAE_ENV) {
-  app.set('trust proxy', 1)
+  app.set('trust proxy', 1);
 }
 
 // --- HELMET ---
@@ -90,11 +93,11 @@ app.use(
 );
 
 // --- MORGAN LOGGER ---
-app.use(logger('dev'));
+app.use(logger(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 
 // --- BODY PARSERS ---
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
 // --- STATIC FILES ---
 app.use(express.static(angularDistPath));

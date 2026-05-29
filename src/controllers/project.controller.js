@@ -41,7 +41,7 @@ export const newProject = async (req, res) => {
   }
 };
 
-// GET ALL PROJECT WITH PAGINATION
+// GET ALL PROJECT (PAGINATION)
 export const getPaginatedProjects = async (req, res) => {
   try {
     // extract and validate pagination parameters from query string (with default values)
@@ -158,7 +158,7 @@ export const updateProjectById = async (req, res) => {
       },
     );
 
-    // is project is not found
+    // if project is not found
     if (!project) {
       return res.status(404).json({
         success: false,

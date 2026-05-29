@@ -1,13 +1,18 @@
 import { SecretManagerServiceClient } from '@google-cloud/secret-manager';
 
-// create the Secret Manager client
-const client = new SecretManagerServiceClient();
+// singleton pattern for Secret Manager client
+let client;
 
 export async function getSecret(secretName) {
-  // allow overriding the project ID is secrets are located in a different GCP project
+  // initialize client if it doesn't exist.
+  if (!client) {
+    client = new SecretManagerServiceClient()
+  }
+  // allow overriding the project ID if secrets are located in a different GCP project
   const projectId =
     process.env.SECRETS_PROJECT_ID || process.env.GOOGLE_CLOUD_PROJECT;
   if (!projectId) {
+    // throw an error if the project ID is not set, since it is required to access secrets
     throw new Error(
       'Neither SECRETS_PROJECT_ID nor GOOGLE_CLOUD_PROJECT environment variable is set.',
     );
@@ -26,7 +31,6 @@ export async function loadSecrets() {
     // fetch all secrets in parallel
     const [mongoConn, mongoPass, corsOrigin] = await Promise.all([
       getSecret('MONGO_CONNECTION_STRING'),
-      getSecret('MONGO_DATABASE_PASSWORD'),
       getSecret('CORS_ORIGIN'),
     ]);
 

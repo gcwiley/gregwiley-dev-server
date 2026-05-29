@@ -10,5 +10,5 @@ automatic_scaling:
 
 env_variables:
   NODE_ENV: 'production'
-  SECRETS_PROJECTS_ID: 'lyrical-amulet-495920-u8' # add the project ID hosting the secrets here
+  SECRETS_PROJECT_ID: 'lyrical-amulet-495920-u8' # add the project ID hosting the secrets here
   DATABASE_NAME: 'mongo-database'

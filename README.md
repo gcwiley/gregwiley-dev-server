@@ -1,4 +1,4 @@
-# gregwiley.dev Server
+# gregwiley.dev
 
 ## Overview
 
