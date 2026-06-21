@@ -8,14 +8,6 @@ import logger from 'morgan';
 import helmet from 'helmet';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
-import * as dotenv from 'dotenv';
-
-// load environment variables
-dotenv.config({
-  path: path.resolve(process.cwd(), '.env'),
-  debug: process.env.NODE_ENV === 'development',
-  encoding: 'UTF-8'
-})
 
 // load secrets first
 import { loadSecrets } from './secrets.js';
@@ -96,8 +88,8 @@ app.use(
 app.use(logger(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 
 // --- BODY PARSERS ---
-app.use(express.json({ limit: '10kb' }));
-app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+app.use(express.json({ limit: '1mb' }));
+app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 
 // --- STATIC FILES ---
 app.use(express.static(angularDistPath));
