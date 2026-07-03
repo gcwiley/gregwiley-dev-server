@@ -1,8 +1,12 @@
-# Introduction
+# gregwiley.dev
 
-## Overview
+A robust, modern **Node.js / Express** REST API backend powering my personal project tracker web application. It connects to **MongoDB** (via Mongoose), integrates with **Firebase Authentication** & **Firebase Storage**, and is structured to serve the compiled Angular frontend SPA.
 
-A Node.js/Express REST API backend for my personal code project tracker application. Serves an Angular SPA from `dist/gregwiley-dev-client/browser` and exposes a JSON API under `/api`.
+---
+
+## Features
+
+- **Project Management**: Full CRUD endpoints for managing projects, including paginated list, search, and count functionality.
 
 ## Tech Stack
 

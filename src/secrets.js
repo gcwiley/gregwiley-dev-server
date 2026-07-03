@@ -3,6 +3,7 @@ import { SecretManagerServiceClient } from '@google-cloud/secret-manager';
 // singleton pattern for Secret Manager client
 let client;
 
+// get a secret from Google Secret Manager
 export async function getSecret(secretName) {
   // initialize client if it doesn't exist.
   if (!client) {
@@ -31,6 +32,7 @@ export async function loadSecrets() {
     // fetch all secrets in parallel
     const [mongoConn, mongoPass, corsOrigin] = await Promise.all([
       getSecret('MONGO_CONNECTION_STRING'),
+      getSecret('MONGO_DATABASE_PASSWORD'),
       getSecret('CORS_ORIGIN'),
     ]);
 

@@ -72,13 +72,13 @@ const projectSchema = new Schema(
     // project start date
     startDate: {
       type: Date,
-      required: [true, 'Start date is required.'],
+      required: [true, 'A project start date is required.'],
       default: Date.now,
       validate: {
         validator: function (value) {
           return value <= new Date();
         },
-        message: 'Start date cannot be in the future.',
+        message: 'The project start date cannot be in the future.',
       },
     },
     // Git Repo URL 
