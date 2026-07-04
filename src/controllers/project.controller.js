@@ -44,53 +44,27 @@ export const newProject = async (req, res) => {
 // GET ALL PROJECT (PAGINATION)
 export const getPaginatedProjects = async (req, res) => {
   try {
-    // extract and validate pagination parameters from query string (with default values)
-    let { page = 1, size = 10 } = req.query; // default page is 1, default size is 10
+    let { page = 1, limit = 10, sort = 'createdAt', order = 'desc' } = req.query;
 
-    // convert page and size to numbers
-    page = Number(page);
-    size = Number(size);
+    page = Math.max(1, Number(page));
+    limit = Math.max(1, Math.min(100, Number(limit))); // cap at 100 per page
 
-    // page and size must be positive integers
-    if (page < 1) page = 1;
-    if (size < 1) size = 10;
+    const sortOrder = order === 'asc' ? 1 : -1;
+    const skip = (page - 1) * limit;
 
-    const limit = size;
-    const skip = (page - 1) * size;
+    const [projects, total] = await Promise.all([
+      Project.find({}).sort({ [sort]: sortOrder }).skip(skip).limit(limit).lean(),
+      Project.countDocuments({}),
+    ]);
 
-    const projects = await Project.find({}).skip(skip).limit(limit).lean();
-    const totalProjects = await Project.countDocuments({});
-
-    if (projects.length === 0 && totalProjects > 0) {
-      return res.status(404).json({
-        success: false,
-        message: 'No projects found on this page.',
-      });
-    }
-
-    if (totalProjects === 0) {
-      return res.status(404).json({
-        success: false,
-        message: 'No projects found.',
-      });
-    }
-
-    const totalPages = Math.ceil(totalProjects / limit);
-
-    const paginationInfo = {
-      totalProjects,
-      totalPages,
-      currentPage: page,
-      pageSize: limit,
-    };
+    const totalPages = Math.ceil(total / limit);
 
     res.status(200).json({
-      success: true,
-      message: 'Successfully retrieved paginated projects',
-      data: {
-        projects,
-        paginationInfo,
-      },
+      data: projects,
+      total,
+      page,
+      limit,
+      totalPages,
     });
   } catch (error) {
     console.error('Error fetching paginated projects:', error);

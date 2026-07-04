@@ -56,7 +56,7 @@ async function connect() {
   );
 }
 
-// --- Disconnect Function
+// --- Disconnect Function ---
 async function disconnect() {
   await mongoose.connection.close();
   console.log(chalk.blue('Mongoose connection closed.'));
