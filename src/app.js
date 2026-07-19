@@ -5,7 +5,6 @@ import chalk from 'chalk';
 import admin from 'firebase-admin';
 import express from 'express';
 import logger from 'morgan';
-import helmet from 'helmet';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 
@@ -54,49 +53,6 @@ const app = express();
 if (process.env.NODE_ENV === 'production' || process.env.GAE_ENV) {
   app.set('trust proxy', 1);
 }
-
-// --- HELMET ---
-app.use(
-  helmet({
-    crossOriginOpenerPolicy: { policy: 'same-origin-allow-popups' }, // required for Google Auth popup
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: [
-          "'self'",
-          'https://apis.google.com',       // Google Identity Services
-          'https://accounts.google.com',   // Google OAuth
-        ],
-        scriptSrcAttr: ["'unsafe-inline'"], // allows inline event handlers (e.g. onclick) from Angular/libraries; fix at source when possible
-        styleSrc: ["'self'", "'unsafe-inline'"],
-        imgSrc: [
-          "'self'",
-          'data:',
-          'blob:',
-          'https://*.googleusercontent.com', // Google profile pictures
-        ],
-        fontSrc: ["'self'", 'data:', 'https://fonts.gstatic.com'],
-        styleSrcElem: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
-        connectSrc: [
-          "'self'",
-          'https://*.googleapis.com',                    // Firebase/Google APIs
-          'https://identitytoolkit.googleapis.com',      // Firebase Auth REST
-          'https://securetoken.googleapis.com',          // Firebase token refresh
-          'https://*.firebaseio.com',                    // Firebase Realtime Database
-        ],
-        frameSrc: [
-          "'self'",
-          'https://accounts.google.com',   // Google OAuth popup
-          'https://*.firebaseapp.com',     // Firebase Auth domain
-        ],
-        objectSrc: ["'none'"],
-        baseUri: ["'self'"],
-        formAction: ["'self'", 'https://accounts.google.com'],
-        frameAncestors: ["'none'"],
-      },
-    },
-  }),
-);
 
 // --- CORS ---
 app.use(
