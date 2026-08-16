@@ -1,3 +1,5 @@
 # Tasks
 
-* remove helmet
+* app.js revise - match bookshelf app
+
+* app header fix

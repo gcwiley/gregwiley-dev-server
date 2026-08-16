@@ -10,7 +10,7 @@ instance_class: F1
 # The automatic_scaling section configures how the application scales based on traffic. You can adjust the min_instances and max_instances values based on your expected traffic and budget. The target_cpu_utilization and max_concurrent_requests settings help optimize performance and resource usage.
 automatic_scaling:
   min_instances: 0 # Set to 0 to allow the app to scale down to zero when not in use
-  max_instances: 5 # Adjust this based on your expected traffic and budget
+  max_instances: 5 # Caps instances to prevent unexpected traffic costs spikes
   target_cpu_utilization: 0.65 # Adjust this based on your app's performance characteristics
   max_concurrent_requests: 10
 
