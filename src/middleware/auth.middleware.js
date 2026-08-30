@@ -1,5 +1,6 @@
 import admin from 'firebase-admin';
 
+// Middleware to authenticate requests using Firebase ID tokens.
 export const authenticate = async (req, res, next) => {
   const authHeader = req.headers.authorization;
 

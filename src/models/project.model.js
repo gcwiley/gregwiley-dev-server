@@ -1,26 +1,6 @@
 import mongoose from 'mongoose';
+import { projectEnums, isValidUrl } from './project.constants.js';
 const { Schema } = mongoose;
-
-// configuration object for project enums
-const projectEnums = {
-  status: ['not-started', 'in-development', 'completed', 'archived'],
-  category: ['tutorial', 'personal-project', 'arc-gis-project'],
-  language: ['JavaScript', 'Python', 'Dart'], // keep languages defined here.
-};
-
-// reusable URL validator function (more robust)
-const isValidUrl = (url) => {
-  // allow empty strings or null/undefined to pass validation
-  if (!url) {
-    return true;
-  }
-  try {
-    new URL(url);
-    return true;
-  } catch (error) {
-    return false;
-  }
-};
 
 const projectSchema = new Schema(
   {
@@ -58,7 +38,7 @@ const projectSchema = new Schema(
       default: [],
       index: true,
     },
-    // programming language
+    // programming language 
     programmingLanguage: {
       type: String,
       required: [true, 'Project Language is required.'],
@@ -81,7 +61,7 @@ const projectSchema = new Schema(
         message: 'The project start date cannot be in the future.',
       },
     },
-    // Git Repo URL 
+    // Git Repo URL
     gitUrl: {
       type: String,
       trim: true,
@@ -91,14 +71,14 @@ const projectSchema = new Schema(
         message: (props) => `${props.value} is not a valid URL.`,
       },
     },
-    // project description
+    // project description for the project
     description: {
       type: String,
       trim: true,
       required: [true, 'Description is required.'],
       maxlength: [1000, 'Description cannot exceed 1000 characters.'],
     },
-    // favorite
+    // favorite flag for the project
     isFavorite: {
       type: Boolean,
       default: false,
@@ -106,10 +86,11 @@ const projectSchema = new Schema(
     },
   },
   {
-    timestamps: true,
+    timestamps: true, // Automatically add createdAt and updatedAt fields.
   }
 );
 
+// Index for sorting projects by creation date in descending order.
 projectSchema.index({ createdAt: -1 });
 
 const Project = mongoose.model('Project', projectSchema);
