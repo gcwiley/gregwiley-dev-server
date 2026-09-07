@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
-import { projectEnums, isValidUrl } from './project.constants.js';
+import { projectEnums } from './project.constants.js';
+import { isValidUrl } from '../utils/valid-url.js';
 const { Schema } = mongoose;
 
 const projectSchema = new Schema(
@@ -38,7 +39,7 @@ const projectSchema = new Schema(
       default: [],
       index: true,
     },
-    // programming language 
+    // programming language
     programmingLanguage: {
       type: String,
       required: [true, 'Project Language is required.'],
@@ -87,7 +88,7 @@ const projectSchema = new Schema(
   },
   {
     timestamps: true, // Automatically add createdAt and updatedAt fields.
-  }
+  },
 );
 
 // Index for sorting projects by creation date in descending order.

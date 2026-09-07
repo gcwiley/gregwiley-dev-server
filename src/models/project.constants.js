@@ -4,4 +4,4 @@ const projectEnums = {
   language: ['JavaScript', 'Python', 'Dart'], // keep languages defined here.
 };
 
-export { projectEnums, isValidUrl };
+export { projectEnums };
