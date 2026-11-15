@@ -27,7 +27,9 @@ export const authenticate = async (req, res, next) => {
     // proceed to the next middleware or route handler
     next();
   } catch (error) {
+    // 
     console.error('Token verification failed:', error.code, error.message);
+    // 
     return res.status(401).json({ message: 'Invalid or expired token.' });
   }
 };

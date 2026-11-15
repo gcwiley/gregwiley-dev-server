@@ -15,7 +15,7 @@ A robust, modern **Node.js / Express** REST API backend powering my personal pro
 - **Database**: MongoDB (Mongoose)
 - **Auth**: Firebase Admin SDK — verifies Firebase ID tokens (JWT Bearer tokens)
 - **File Storage**: Firebase/Google Cloud Storage (via `firebase-admin`)
-- **Deploy Target**: Google App Engine (`app.yaml`, nodejs24 runtime)
+- **Deploy Target**: Google App Engine (`app.yaml`, nodejs24 runtime) fix this!
 
 ## Running the Project
 

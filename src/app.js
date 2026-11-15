@@ -42,12 +42,11 @@ if (process.env.NODE_ENV === 'production' || process.env.GAE_ENV) {
 // --- FIREBASE INIT ---
 admin.initializeApp({
   credential: serviceAccountCredential,
-  storageBucket: `${process.env.GOOGLE_CLOUD_PROJECT || 'fix this!'}.appspot.com`,
+  storageBucket: `${process.env.GOOGLE_CLOUD_PROJECT || 'gregwiley-dev'}.appspot.com`,
 });
 const bucket = admin.storage().bucket();
 
 // --- EXPRESS SETUP ---
-// create express app instance
 const app = express();
 // trust first proxy (GAE load balancer)
 if (process.env.NODE_ENV === 'production' || process.env.GAE_ENV) {
@@ -84,7 +83,10 @@ const apiLimiter = rateLimit({
   max: 100, // limit each IP to 100 requests per window
   standardHeaders: true, // return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // disable the `X-RateLimit-*` headers
-  message: 'Too many requests from this IP, please try again after 15 minutes.',
+  message: {
+    success: false,
+    message: 'Too many requests from this IP. Please try again after 15 minutes.'
+  },
 });
 
 // apply the rate limiting middleware to API calls

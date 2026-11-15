@@ -1,0 +1,36 @@
+# Google Cloud Build configuration for building with Buildpacks and deploying to Cloud Run
+# Usage: gcloud builds submit --region=us-east4 --config=cloudbuild.yaml
+
+substitutions:
+  _REGION: "us-east4"
+  _REPO_NAME: "cloud-run-source-deploy"
+  _SERVICE_NAME: "gregwiley-dev"
+
+steps:
+  # Step 1: Build and push the container image using Google Cloud Buildpacks
+  - name: "gcr.io/k8s-skaffold/pack" # using Google's Buildpacks tool for building container images
+    entrypoint: "pack" # pack is a command-line tool that builds OCI-compliant container images from source code
+    args:
+      - "build"
+      - "$_REGION-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/$_SERVICE_NAME:$BUILD_ID"
+      - "--builder=gcr.io/buildpacks/builder:latest"
+      - "--network=cloudbuild"
+      - "--publish"
+
+  # Step 2: Deploy the built container image to Google Cloud Run
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim" # gcloud is the Google Cloud command-line tool for managing Google Cloud resources
+    entrypoint: "gcloud"
+    args:
+      - "run"
+      - "deploy"
+      - "$_SERVICE_NAME"
+      - "--image=$_REGION-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/$_SERVICE_NAME:$BUILD_ID"
+      - "--region=$_REGION" # region where the Cloud Run service will be deployed
+      - "--allow-unauthenticated" # allows public access to the Cloud Run service - no authentication required to access
+      - "--min-instances=0" # 0 allows for scale to zero when not in use - costs nothing when idle
+      - "--max-instances=5" # maximum number of instances to scale to - prevents runaway costs
+      - "--concurrency=10" # Number of concurrent requests per instance - allows more efficient use of resources
+      - "--set-env-vars=NODE_ENV=production,SECRETS_PROJECT_ID=lyrical-amulet-495920-u8,DATABASE_NAME=mongo-database"
+
+options:
+  logging: CLOUD_LOGGING_ONLY # logs all build output to Cloud Logging

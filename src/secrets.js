@@ -7,7 +7,7 @@ let client;
 export async function getSecret(secretName) {
   // initialize client if it doesn't exist.
   if (!client) {
-    client = new SecretManagerServiceClient()
+    client = new SecretManagerServiceClient();
   }
   // allow overriding the project ID if secrets are located in a different GCP project
   const projectId =

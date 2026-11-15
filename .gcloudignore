@@ -4,8 +4,12 @@
 .git
 .gitignore
 node_modules/
+credentials/
+.env
 .vscode
 .idx/
+.claud.md
+.gemini/
 *.log
-to-do-list.md
+tasks.md
 eslint.config.js

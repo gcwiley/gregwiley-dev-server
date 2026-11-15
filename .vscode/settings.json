@@ -16,6 +16,9 @@
   // list of words consided spelled correctly
   "cSpell.words": [
     "appspot",
+    "Buildpacks",
+    "cloudbuild",
+    "cloudsdktool",
     "gcloudignore",
     "gregwiley",
     "maxlength"
