@@ -13,7 +13,7 @@ steps:
     args:
       - "build"
       - "$_REGION-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/$_SERVICE_NAME:$BUILD_ID"
-      - "--builder=gcr.io/buildpacks/builder:latest"
+      - "--builder=gcr.io/buildpacks/builder:google-24"
       - "--network=cloudbuild"
       - "--publish"
 

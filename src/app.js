@@ -8,10 +8,12 @@ import logger from 'morgan';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 
+// Database
 import { connect, disconnect } from './db/connect_to_db.js';
 
 // --- IMPORT ROUTES ---
 import { projectRouter } from './routes/project.routes.js';
+// space
 
 // --- CONFIGURATION ---
 const __filename = fileURLToPath(import.meta.url);
@@ -26,7 +28,11 @@ const angularDistPath = path.join(
 // --- FIREBASE CREDENTIALS ---
 let serviceAccountCredential;
 
-if (process.env.NODE_ENV === 'production' || process.env.GAE_ENV) {
+if (
+  process.env.NODE_ENV === 'production' ||
+  process.env.GAE_ENV ||
+  process.env.K_SERVICE
+) {
   serviceAccountCredential = admin.credential.applicationDefault();
 } else {
   // local development fallback
@@ -85,7 +91,8 @@ const apiLimiter = rateLimit({
   legacyHeaders: false, // disable the `X-RateLimit-*` headers
   message: {
     success: false,
-    message: 'Too many requests from this IP. Please try again after 15 minutes.'
+    message:
+      'Too many requests from this IP. Please try again after 15 minutes.',
   },
 });
 
@@ -100,8 +107,8 @@ app.use('/api', (req, res) => {
   res.status(404).json({ error: 'API endpoint not found' });
 });
 
-// SPA catch-all - serves index.html for client-side routing
-app.get('*', (req, res) => {
+// SPA catch-all - serves index.html for client-side routing (Express 5 named wildcard)
+app.get('/{*splat}', (req, res) => {
   res.sendFile(path.resolve(angularDistPath, 'index.html'));
 });
 
@@ -123,7 +130,7 @@ const startServer = async () => {
     await connect();
 
     const server = app.listen(PORT, () => {
-      console.log(chalk.green(`\n✓ Server running on port ${PORT}\n`));
+      console.log(chalk.green(`\n Server running on port ${PORT}\n`));
     });
 
     // Graceful shutdown handler
@@ -133,7 +140,7 @@ const startServer = async () => {
       server.close(async () => {
         try {
           await disconnect(); // Close DB connection
-          console.log(chalk.green('✓ Server closed gracefully'));
+          console.log(chalk.green('Server closed gracefully'));
           process.exit(0);
         } catch (err) {
           console.error(chalk.red('Error during shutdown:', err));
